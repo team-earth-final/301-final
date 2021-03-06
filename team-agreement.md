@@ -1,4 +1,4 @@
-# Team Agreement
+# Team Agreement (Andy Agulue, Ceylin Brooks, Fizzo Pannosch, James Mansour)
 
 ### Conflict plan: 
 - What will your group do when it encounters conflict? What will your process be to resolve it? We plan to solve any conflicts with group mediation while also being very open and honest about how we are feeling and what caused that upset. 
