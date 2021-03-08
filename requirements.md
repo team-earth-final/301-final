@@ -1,4 +1,5 @@
-##Vision
+# Vision
+
 What is the vision of this product?
 
 The goal is this applications creation was to make the users listening stats more useful to them. We used the data that is up to a year old to creat playlists based on that users music taste. We also generated new music to listen to based on that users most listened to genre.
