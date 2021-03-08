@@ -14,8 +14,27 @@ Our app is able to display information that you might have known was stored. We 
 
 # Scope (In/Out)
 - This application will provide music sugestions specific to the users listening habits.
+- This application will provide song information.
 
 ## OUT - What will your product not do.
 
 - It will not require a username/password user profile creation.
 - Multiple screens will not be able to utlize that same account to stream
+
+
+# MVP 
+
+What will your MVP functionality be?
+
+- An application that uses a sign in and then displays your top song with details.
+
+What are your stretch goals?
+
+- Song lyrics displayed.
+- Automated playlist creation.
+- Which 10 songs have not been listened for the last year?
+- Our app aims to help the user ease the annoyance of trying to integrate playlists for cross-platform streaming 
+- Suggest playlist based on your mood. 
+- We also wanted to pull down songs from certain groups and create a playlist automatically for the users.
+
+
