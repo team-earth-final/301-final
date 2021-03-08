@@ -37,4 +37,12 @@ What are your stretch goals?
 - Suggest playlist based on your mood. 
 - We also wanted to pull down songs from certain groups and create a playlist automatically for the users.
 
+# Functional Requirements
 
+- An user can link their account through their spotify
+- Users can retrieve song data.
+- A user can access year old song data.
+
+# Non-Functional Requirements
+
+- Security: We will need to protect our users login information. We plan use utilize the dotenv and .gitignore witha secret KEY to do so. Users will be able to athenticate with putting their information at risk of vulnerabitly.
