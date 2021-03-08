@@ -11,3 +11,11 @@ For the user, it eases the ardous task of curating and searching for new music a
 Why should we care about your product?
 
 Our app is able to display information that you might have known was stored. We packaged that info with a bow and brought it right to you.
+
+# Scope (In/Out)
+- This application will provide music sugestions specific to the users listening habits.
+
+## OUT - What will your product not do.
+
+- It will not require a username/password user profile creation.
+- Multiple screens will not be able to utlize that same account to stream
