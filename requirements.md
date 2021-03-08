@@ -46,3 +46,4 @@ What are your stretch goals?
 # Non-Functional Requirements
 
 - Security: We will need to protect our users login information. We plan use utilize the dotenv and .gitignore witha secret KEY to do so. Users will be able to athenticate with putting their information at risk of vulnerabitly.
+- Availability : Our application will be availible to users using spotify. We plan to build our app in a way that is eventually fucntioal to users that subscribe to different music platforms.
