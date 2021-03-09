@@ -20,10 +20,13 @@ var client_secret = process.env.CLIENT_SECRET; // spotify Client secret
 var authCallbackPath = '/auth/spotify/callback';
 var redirect_uri = process.env.REDIRECT_URI; // redirect uri
 
+
 app.set('view engine', 'ejs');
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
+// ======================================= Rout Handelars =======================================
 
 //config passport to use OAuth2 with Spotify.
 passport.serializeUser(function (user, done) { done(null, user); });
@@ -113,5 +116,3 @@ app.use('*', (request, response) => response.send('Sorry, that route does not ex
 // ======================================= start app =======================================
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-
-
