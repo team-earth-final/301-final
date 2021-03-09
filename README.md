@@ -2,7 +2,7 @@
 
 A music app designed to download cross platform playlists.
 
-## the team
+## The team
 
 Ceylin Brooks
 James Mansour
