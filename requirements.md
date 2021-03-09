@@ -47,3 +47,7 @@ What are your stretch goals?
 
 - Security: We will need to protect our users login information. We plan use utilize the dotenv and .gitignore witha secret KEY to do so. Users will be able to athenticate with putting their information at risk of vulnerabitly.
 - Availability : Our application will be availible to users using spotify. We plan to build our app in a way that is eventually fucntioal to users that subscribe to different music platforms.
+
+# Domain Modeling
+![image](https://user-images.githubusercontent.com/66962689/110506469-1d1ca680-80cd-11eb-9378-c9ee21b7463c.png)
+
