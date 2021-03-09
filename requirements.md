@@ -37,6 +37,13 @@ What are your stretch goals?
 - Suggest playlist based on your mood. 
 - We also wanted to pull down songs from certain groups and create a playlist automatically for the users.
 
+# Domain Modeling 
+![image](https://user-images.githubusercontent.com/66962689/110508556-1d1da600-80cf-11eb-87c7-211c4af54a13.png)
+![image](https://user-images.githubusercontent.com/66962689/110508588-29a1fe80-80cf-11eb-9a02-c785fbda65a6.png)
+![image](https://user-images.githubusercontent.com/66962689/110508687-42aaaf80-80cf-11eb-874f-e32d19a459df.png)
+
+
+
 # Functional Requirements
 
 - An user can link their account through their spotify
