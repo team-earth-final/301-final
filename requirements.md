@@ -38,8 +38,12 @@ What are your stretch goals?
 - We also wanted to pull down songs from certain groups and create a playlist automatically for the users.
 
 # Domain Modeling 
+
+## Domain Model
 ![image](https://user-images.githubusercontent.com/66962689/110508556-1d1da600-80cf-11eb-87c7-211c4af54a13.png)
-![image](https://user-images.githubusercontent.com/66962689/110508588-29a1fe80-80cf-11eb-9a02-c785fbda65a6.png)
+## Database Relationship Model
+![image](https://user-images.githubusercontent.com/66962689/110508754-58b87000-80cf-11eb-91ff-cdf234018a08.png)
+## WIRE FRAME DIAGRAM
 ![image](https://user-images.githubusercontent.com/66962689/110508687-42aaaf80-80cf-11eb-874f-e32d19a459df.png)
 
 
