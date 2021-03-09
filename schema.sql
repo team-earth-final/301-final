@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS app_users;
-DROP TABLE IF EXISTS track;
-DROP TABLE IF EXISTS user_track;
+DROP TABLE IF EXISTS tracks;
+DROP TABLE IF EXISTS user_tracks;
 
 CREATE TABLE app_users (
     id SERIAL PRIMARY KEY,
@@ -27,7 +27,7 @@ CREATE TABLE users_tracks (
     CONSTRAINT fk_app_users
       FOREIGN KEY(user_id) 
 	  REFERENCES app_users(id),
-    CONSTRAINT fk_track
+    CONSTRAINT fk_tracks
       FOREIGN KEY(track_id) 
 	  REFERENCES tracks(id)
 );
