@@ -5,12 +5,13 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const superagent = require('superagent');
-const path = require('path')
+const path = require('path');
 const client = require('./client');
 const methodOverride = require('method-override');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
-const session = require('express-session')
+const session = require('express-session');
+
 
 // ======================================= app config =======================================
 
@@ -22,7 +23,7 @@ const redirect_uri = process.env.REDIRECT_URI; // redirect uri
 
 
 app.set('view engine', 'ejs');
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
@@ -84,30 +85,65 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
-    console.log(err)
+    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err });
   };
 }
 
 function exampleApiCall(req, res) {
-  superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=1")
+
+  //get person top song
+  // getTopSong();
+  superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0")
     .auth(req.user.accessToken, { type: 'bearer' })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
-      console.log('1234asdf');
-      console.log(data.body);
-      res.redirect('/');
-    }).catch(handelError(res));
-}
 
+      //get song details from spotify
+      superagent.get(`https://api.spotify.com/v1/tracks/${data.body.items[0].id}`)
+        .auth(req.user.accessToken, { type: 'bearer' })
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .then(data => {
+          const sqlString = 'INSERT INTO tracks (track_name, artist, album, release_date, genre, spotify_track_id, preview_url) VALUES($1, $2, $3, $4, $5, $6, $7);';
+          const sqlArray = [
+            data.body.name,
+            data.body.artists[0].name,
+            data.body.album.name,
+            data.body.album.release_date,
+            'todo get genre', //later
+            data.body.id,
+            data.body.preview_url
+          ];
+          client.query(sqlString, sqlArray);
+        }).catch(handelError(res));
+    });
+
+  // get top artist
+  superagent.get("https://api.spotify.com/v1/me/top/artists?limit=1&offset=0")
+    .auth(req.user.accessToken, { type: 'bearer' })
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .then(data => {
+      console.log(data.body);
+      const sqlString = 'INSERT INTO app_users(fave_artist) VALUES($1);';
+      const sqlArray = [
+        data.body.items[0].name, //track_name
+      ];
+      client.query(sqlString, sqlArray)
+        .catch(handelError(res));
+    });
+  res.redirect('/');
+
+}
 function getlanding(req, res) {
-  res.render('index', { user: req.user })
+  res.render('index', { user: req.user });
 }
 
 function getUserData(req, res) {
-  passport.authenticate()
+  passport.authenticate();
 }
 
 //catchall / 404
