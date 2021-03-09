@@ -103,7 +103,7 @@ function exampleApiCall(req, res) {
 }
 
 function getlanding(req, res) {
-  res.render('index', { user: req.user })
+  res.render('index', { user: req.user, title: 'Landing Page' })
 }
 
 function getUserData(req, res) {

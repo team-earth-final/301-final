@@ -2,18 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Lyfe</title>
-    <link rel="stylesheet" href="/static/styles/reset.css">
-    <link rel="stylesheet" href="/static/styles/base.css">
-    <link rel="stylesheet" href="/static/styles/layout.css">
-    <link rel="stylesheet" href="/static/styles/modules.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Lyfe</title>
+  <link rel="stylesheet" href="/static/styles/reset.css">
+  <link rel="stylesheet" href="/static/styles/base.css">
+  <link rel="stylesheet" href="/static/styles/layout.css">
+  <link rel="stylesheet" href="/static/styles/modules.css">
 </head>
 
 <body>
-    <a href="/auth/spotify">Login with Spotify</a>
+  <%- include('partials/header.ejs') %>
+  <button href="/auth/spotify">Login with Spotify</button>
+  <button>View others stats</button>
 </body>
 
 </html>
