@@ -85,14 +85,12 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
-    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err, title: 'Error' });
   };
 }
 
 async function initialUserDataPull(req, res) {
-  console.log(req.user.accessToken);
 
   let user_id;
   // get top artist
@@ -101,10 +99,11 @@ async function initialUserDataPull(req, res) {
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
-      const sqlString = 'INSERT INTO app_users(fave_artist, spotify_user_id) VALUES($1, $2) ON CONFLICT(spotify_user_id) DO UPDATE SET fave_artist=EXCLUDED.fave_artist RETURNING id;';
+      const sqlString = 'INSERT INTO app_users(fave_artist, spotify_user_id, display_name) VALUES($1, $2, $3) ON CONFLICT(spotify_user_id) DO UPDATE SET fave_artist=EXCLUDED.fave_artist RETURNING id;';
       const sqlArray = [
         data.body.items[0].name,
-        req.user.id
+        req.user.id,
+        req.user.displayName
       ];
       client.query(sqlString, sqlArray)
         .then(result => {
@@ -202,17 +201,25 @@ async function getUserData(req, res) {
   let userObject;
   let tracks;
 
-  let sqlSelect = `SELECT * FROM app_users WHERE id=${req.params.id};`;
+  let sqlSelect = `SELECT
+  fave_artist,
+  display_name,
+  spotify_user_id,
+  track_name,
+  release_date,
+  preview_url
+  FROM app_users 
+  LEFT OUTER JOIN tracks ON tracks.app_user_id=app_users.id
+  WHERE app_users.id=${req.params.id}
+  AND tracks.user_rank =1;`;
   await client.query(sqlSelect)
     .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
 
   sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
-  console.log(sqlSelect);
   await client.query(sqlSelect)
     .then(result => { tracks = result.rows })
     .catch(handelError(res))
-
   res.render('user_stats', { userObject, tracks });
 }
 
