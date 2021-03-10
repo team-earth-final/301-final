@@ -127,10 +127,9 @@ function exampleApiCall(req, res) {
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
-      console.log(data.body);
       const sqlString = 'INSERT INTO app_users(fave_artist) VALUES($1);';
       const sqlArray = [
-        data.body.items[0].name, //track_name
+        data.body.items[0].name
       ];
       client.query(sqlString, sqlArray)
         .catch(handelError(res));
@@ -143,9 +142,9 @@ function getlanding(req, res) {
 }
 
 async function getUserData(req, res) {
-  const sqlSelect = `SELECT * FROM app_user WHERE id=${req.params.id}`;
+  const sqlSelect = `SELECT * FROM app_users WHERE id=${req.params.id}`;
   client.query(sqlSelect)
-    .then(user => { res.render('Fetzoose_Page', { user: user.rows[0] }) })
+    .then(user => { res.render('user_stats.ejs', { userObject: user.rows[0] }) })
     .catch(handelError(res))
 }
 
