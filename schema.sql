@@ -8,9 +8,6 @@ CREATE TABLE app_users (
     display_name VARCHAR(255),
     spotify_user_id VARCHAR(255) UNIQUE,
     top_artist VARCHAR(255),
-    top_track VARCHAR(255),
-    top_track_release_date VARCHAR(255),
-    top_track_cover_url VARCHAR(255)
 );
 
 CREATE TABLE tracks (
