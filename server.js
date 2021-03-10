@@ -67,7 +67,7 @@ app.get('/auth/spotify', authUserWithScopes());
 app.get(authCallbackPath, checkLogin(), (req, res) => { exampleApiCall(req, res); });
 app.get('/', getlanding);
 app.get('/getUserStats/:id', getUserData);
-
+app.get('/getTrackData/:id', getTrackData);
 
 // ======================================= Rout Handelars =======================================
 
@@ -157,72 +157,65 @@ async function exampleApiCall(req, res) {
               client.query(sqlString, sqlArray)
                 .catch(handelError(res));
             };
-      });
+          });
+      })
     })
-  })
   res.redirect('/')
-} 
+}
 app.get('/getTracks', getTracksFRomDatabase)
 function getTracksFRomDatabase(req, res) {
-        client.query('SELECT * FROM tracks')
-          .then(data => {
-            console.log(data.rows);
-          })
-      }
+  client.query('SELECT * FROM tracks')
+    .then(data => {
+      console.log(data.rows);
+    })
+}
 
 app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
 function redirectToAboutTeamEarth(req, res) {
-    res.render('aboutTeamEarth')
+  res.render('aboutTeamEarth')
 }
 
 // todo refernce to individual stat page
 function getlanding(req, res) {
-        res.render('index', { user: req.user });
-      }
+  res.render('index', { user: req.user });
+}
 
 
 async function getUserData(req, res) {
   const sqlSelect = `SELECT * FROM app_users WHERE id=${req.params.id}`;
   client.query(sqlSelect)
-    .then(user => { res.render('user_stats.ejs', { userObject: user.rows[0] }) })
+    .then(user => {
+      tracks = [
+        { track_name: 'track1', genre: 'pho', artist: "a1", album: 'ep1', release_date: '12/12/1221', album_cover_url: 'https://i.pinimg.com/originals/c5/30/52/c53052a1bfbd92bcd48b63389d5de8bf.jpg', rank: '1' },
+        { track_name: 'track2', genre: 'pho', artist: "a2", album: 'ep4', release_date: '12/12/1999', album_cover_url: 'https://i.pinimg.com/originals/c5/30/52/c53052a1bfbd92bcd48b63389d5de8bf.jpg', rank: '2' }
+      ]
+      res.render('user_stats', { userObject: user.rows[0], tracks });
+    })
     .catch(handelError(res))
 }
 
+function getTrackData(req, res) {
+  track = {
+    track_title: 'blah',
+    lyrics: 'we sing words',
+    release_date: '1999',
+    album_cover_url: 'url',
+    artist: 'singer person',
+    popularity: '99',
+    genre: 'pop',
+    album_name: 'dope ep',
+    last_time_user_played: 'date or never',
+    global_play_count: '6712348',
+    users_play_count: '43'
+  };
+  res.render('track_stats', { track });
+}
 
 //catchall / 404
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
 
 
-
-// ======================================= DB Helpers =======================================
-
-// async function buildGetQueryCallback(tabel, res, id, cols) {
-
-//   //set to default of all
-//   cols = cols || "*";
-//   const sqlSelect = `SELECT ${cols} FROM ${tabel}`;
-//   //add id if provided
-//   const args = id ? [sqlSelect + `WHERE id=$1`, [id]] : [sqlSelect];
-//   let result = await client.query(...args)
-//     .catch(handelError(res));
-//   return result;
-// }
-
-// function buildGetQueryCallback(tabel, ejs, cols, id) {
-//   //set to default of all
-//   cols = cols || "*";
-//   return function getAll(req, res) {
-//       const sqlSelect = `SELECT ${cols} FROM ${tabel}`;
-//       //add id if provided
-//       const args = id ? [sqlSelect + `WHERE id=$1`, [id]] : [sqlSelect];
-//       client.query(...args)
-//           .then(result => { res.render(ejs, { result: result.rows }) })
-//           .catch(handelError(res))
-//   }
-// }
-
-
 // ======================================= start app =======================================
 
 
-  app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
