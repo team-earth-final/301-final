@@ -5,14 +5,12 @@ DROP TABLE IF EXISTS app_users;
 CREATE TABLE app_users (
     id SERIAL PRIMARY KEY,
     fave_artist VARCHAR(255),
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    user_name VARCHAR(255),
+    display_name VARCHAR(255),
     spotify_user_id VARCHAR(255) UNIQUE,
     top_artist VARCHAR(255),
-    top_album VARCHAR(255),
-    top_album_release_date VARCHAR(255),
-    top_album_cover_url VARCHAR(255)
+    top_track VARCHAR(255),
+    top_track_release_date VARCHAR(255),
+    top_track_cover_url VARCHAR(255)
 );
 
 CREATE TABLE tracks (
