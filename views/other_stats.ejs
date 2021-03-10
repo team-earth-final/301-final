@@ -14,9 +14,9 @@
 
 <body>
     <%- include('partials/header.ejs') %>
-    <a href="/auth/spotify">Login with Spotify</a>
+    <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> 
 
-    <div id="searchResultsDivOthers">
+    <div id="othersResultsDiv">
       <h2>this is <%= userObject %></h2>
       <% userObject.forEach(individualUser => { %>
         <ul>
