@@ -14,8 +14,6 @@ body, .grid-container  {
     text-align: center;
     padding: 100px;
     width: auto;
-  background:none;
-  
 }
 
 
@@ -74,7 +72,10 @@ body, .grid-container  {
   }
 
 .grid-item4{
-  padding: 300px;
+  padding: 30px;
+  margin-bottom: 100px;
+  margin-right: 50px;
+  text-align: center;
   box-shadow: 3px 4px 0px 0px #899599;
     background:linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
     background-color:#ededed;
@@ -101,7 +102,8 @@ body, .grid-container  {
 
 
  .grid-item5{
-   padding: 30px;
+   padding: 300px;
+   
   text-align: center;
   background: none;
   box-shadow: 3px 4px 0px 0px #899599;
@@ -127,4 +129,4 @@ body, .grid-container  {
     position:relative;
     top:1px;
   }
-} 
+ 
