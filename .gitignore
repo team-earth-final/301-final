@@ -102,5 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
-
+fizzosOwn/server.js
+fizzosOwn/serverOriginalFromGithub.js
 fizzosOwn/
