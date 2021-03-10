@@ -8,7 +8,7 @@ CREATE TABLE app_users (
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     user_name VARCHAR(255),
-    spotify_user_id VARCHAR(255),
+    spotify_user_id VARCHAR(255) UNIQUE,
     top_artist VARCHAR(255),
     top_album VARCHAR(255),
     top_album_release_date VARCHAR(255),
@@ -25,6 +25,10 @@ CREATE TABLE tracks (
     spotify_track_id VARCHAR(255),
     preview_url VARCHAR(255),
     app_user_id INT,
+    user_rank INT,
+    global_plays INT,
+    user_plays INT,
+    popularity INT,
     CONSTRAINT fk_app_users
       FOREIGN KEY(app_user_id) 
     REFERENCES app_users(id)
