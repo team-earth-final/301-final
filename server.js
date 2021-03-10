@@ -124,36 +124,41 @@ async function initialUserDataPull(req, res) {
         const sqlArray = [track.name];
         client.query(sqlString, sqlArray)
           .then(dataFromDatabase => {
+            console.log('do the check');
             if (dataFromDatabase.rows.length === 0) {
-              const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genre, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);';
-              const sqlArray = [
-                track.name, //track_name
-                track.artists[0].name,
-                track.album.name,
-                track.album.release_date,
-                'todo get genre', //later
-                track.id,
-                track.preview_url,
-                user_id,
-                rank,
-                '-1', //later
-                '-1', //potential stretch
-                track.popularity
-              ];
-              client.query(sqlString, sqlArray)
-                .catch(handelError(res));
-              rank++;
+              console.log('made it');
+              //get genre
+              superagent.get(`https://api.spotify.com/v1/artists/${track.artists[0].id}`)
+                .auth(req.user.accessToken, { type: 'bearer' })
+                .set('Accept', 'application/json')
+                .set('Content-Type', 'application/json')
+                .then(data => {
+                  let genres = data.body.genres.join(' | ')
+                  const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);';
+                  const sqlArray = [
+                    track.name,
+                    track.artists[0].name,
+                    track.album.name,
+                    track.album.release_date,
+                    genres,
+                    track.id,
+                    track.preview_url,
+                    user_id,
+                    rank,
+                    '-1', //later
+                    '-1', //potential stretch
+                    track.popularity
+                  ];
+                  console.log(sqlArray);
+                  client.query(sqlString, sqlArray)
+                    .catch(handelError(res));
+                  rank++;
+                });
             };
           });
       })
     })
   res.redirect('/')
-}
-app.get('/getTracks', getTracksFRomDatabase)
-function getTracksFRomDatabase(req, res) {
-  client.query('SELECT * FROM tracks')
-    .then(data => {
-    })
 }
 
 app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
