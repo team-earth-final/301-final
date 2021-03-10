@@ -13,28 +13,24 @@
 </head>
 
 <body>
-    <%- include('partials/header.ejs') %>
+    <%- include('./partials/header.ejs') %>
     <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> 
 
     <div id="UserResultsDiv">
-      <h2>this is <%= userObject %></h2>
-      <!-- <% userObject.forEach(individualUser => { %> -->
+      <h2>this is <%= userObject.user_name %></h2>
         <ul>
           <li>
-
-            <img src="<%= userObject.album_cover_url%>" alt="">              
-            <h3 class="user_name1">Hello, <%= userObject.first_name %></h3>          
-            <h3 class="user_name2">as a spotify user: <%= userObject.user_name %></h3>          
+            <img src="<%= userObject.album_cover_url %>" alt="">              
             <h4 class="top_artist">your favorite Artist is: <%= userObject.top_artist %></h4>          
             <h4 class="top_album">which is on the Album: <%= userObject.top_album %></h4>          
             <h4 class="release_date">and was released on: <%= userObject.release_date %></h4>          
             <form action="/getTrackData/:<%= userObject.track_id%>" method="POST" >
                 <input type="hidden" name="top_track" value="<%= userObject.top_track %>">
-                <input type="submit" value="More info about this Song" class="showTrackBtn">
+                <input class="grid-item5" type="submit" value="More info about this Song" class="showTrackBtn">
             </form>
             <form action="/artist" method="POST" >
               <input type="hidden" name="top_artist" value="<%= userObject.top_artist %>">
-              <input type="submit" value="More info about this Artist" class="showTrackBtn">
+              <input class="grid-item5" type="submit" value="More info about this Artist" class="showTrackBtn">
           </form>
           </li>
        </ul>

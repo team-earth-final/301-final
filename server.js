@@ -92,7 +92,7 @@ function handelError(res) {
 }
 
 async function initialUserDataPull(req, res) {
-  console.log(req.user.accessToken);
+  // console.log(req.user.accessToken);
 
   let user_id;
   // get top artist
@@ -210,14 +210,14 @@ async function getUserData(req, res) {
   sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
   console.log(sqlSelect);
   await client.query(sqlSelect)
-    .then(result => { tracks = result.rows })
+    .then(result => { tracks = result.rows;
+      console.log(tracks); })
     .catch(handelError(res))
-
   res.render('user_stats', { userObject, tracks });
 }
 
 function getTrackData(req, res) {
-  track = {
+  let track = [ {
     track_title: 'blah',
     lyrics: 'we sing words',
     release_date: '1999',
@@ -229,7 +229,20 @@ function getTrackData(req, res) {
     last_time_user_played: 'date or never',
     global_play_count: '6712348',
     users_play_count: '43'
-  };
+  }, 
+  {
+    track_title: 'blah',
+    lyrics: 'we sing words',
+    release_date: '1999',
+    album_cover_url: 'url',
+    artist: 'singer person',
+    popularity: '99',
+    genre: 'pop',
+    album_name: 'dope ep',
+    last_time_user_played: 'date or never',
+    global_play_count: '6712348',
+    users_play_count: '43'
+  } ];
   res.render('track_stats', { track });
 }
 
