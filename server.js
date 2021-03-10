@@ -195,19 +195,26 @@ async function getUserData(req, res) {
 }
 
 function getTrackData(req, res) {
-  track = {
-    track_title: 'blah',
-    lyrics: 'we sing words',
-    release_date: '1999',
-    album_cover_url: 'url',
-    artist: 'singer person',
-    popularity: '99',
-    genre: 'pop',
-    album_name: 'dope ep',
-    last_time_user_played: 'date or never',
-    global_play_count: '6712348',
-    users_play_count: '43'
-  };
+  let track;
+
+  const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
+  client.query(sqlSelect)
+    .then(result => track = result.rows[0])
+    .catch(handelError(res));
+
+  // track = {
+  //   track_title: 'blah',
+  //   lyrics: 'we sing words',
+  //   release_date: '1999',
+  //   album_cover_url: 'url',
+  //   artist: 'singer person',
+  //   popularity: '99',
+  //   genre: 'pop',
+  //   album_name: 'dope ep',
+  //   last_time_user_played: 'date or never',
+  //   global_play_count: '6712348',
+  //   users_play_count: '43'
+  // };
   res.render('track_stats', { track });
 }
 
