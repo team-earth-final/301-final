@@ -14,15 +14,16 @@
 
 <body>
     <%- include('partials/header.ejs') %>
-    <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> 
+    <a href="/auth/spotify">Login with Spotify</a>
 
-    <div id="othersResultsDiv">
-      <!-- <h2>this is <%= userObject %></h2> -->
+    <div id="searchResultsDivOthers">
+      <h2>this is <%= userObject %></h2>
       <% userObject.forEach(individualUser => { %>
         <ul>
           <li>
             <img src="<%= individualUser.preview_url%>" alt="">              
-            <h3 class="user_name"><%= individualUser.user_name %></h3>          
+            <h3 class="user_name1"><%= individualUser.first_name %></h3>          
+            <h3 class="user_name2"><%= individualUser.user_name %></h3>          
             <h4 class="top_artist"><%= individualUser.top_artist %></h4>          
             <h4 class="top_track"><%= individualUser.top_track %></h4>          
              <form action="/track" method="POST" >

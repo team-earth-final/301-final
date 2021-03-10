@@ -68,8 +68,6 @@ h1 {
 }
 img {
   border-radius: 5px;
-  width: 400px;
-  height: 400px;
 }
 h2 {
   padding: 10px;
@@ -84,7 +82,6 @@ p {
 .center {
   display: flex;
   justify-content: center;
-  margin: 24px 0;
 }
 .card-container {
   height: 400px;
@@ -150,10 +147,9 @@ p {
   align-items: flex-end;
 }
 img.authors-social {
-  /* position: absolute; */
-  /* bottom: 20px; */
+  position: absolute;
+  bottom: 20px;
   height: 30px;
-  width: 30px;
   /* margin-top: -70px; */
 }
 .authors-social a:hover {
