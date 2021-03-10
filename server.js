@@ -66,7 +66,7 @@ app.use(passport.session());
 app.get('/auth/spotify', authUserWithScopes());
 app.get(authCallbackPath, checkLogin(), (req, res) => { exampleApiCall(req, res); });
 app.get('/', getlanding);
-app.get('/sampleUseInfo', getUserData);
+app.get('/getUserStats/:id', getUserData);
 
 
 // ======================================= Rout Handelars =======================================
@@ -87,7 +87,7 @@ function handelError(res) {
     //log error
     console.log(err);
     // let user know we messed up
-    res.status(500).render("error", { err: err });
+    res.status(500).render("error", { err: err, title: 'Error' });
   };
 }
 
@@ -175,13 +175,49 @@ function getlanding(req, res) {
         res.render('index', { user: req.user });
       }
 
-function getUserData(req, res) {
-        passport.authenticate();
-      }
+
+async function getUserData(req, res) {
+  const sqlSelect = `SELECT * FROM app_user WHERE id=${req.params.id}`;
+  client.query(sqlSelect)
+    .then(user => { res.render('Fetzoose_Page', { user: user.rows[0] }) })
+    .catch(handelError(res))
+}
+
 
 //catchall / 404
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
 
-  // ======================================= start app =======================================
+
+
+// ======================================= DB Helpers =======================================
+
+// async function buildGetQueryCallback(tabel, res, id, cols) {
+
+//   //set to default of all
+//   cols = cols || "*";
+//   const sqlSelect = `SELECT ${cols} FROM ${tabel}`;
+//   //add id if provided
+//   const args = id ? [sqlSelect + `WHERE id=$1`, [id]] : [sqlSelect];
+//   let result = await client.query(...args)
+//     .catch(handelError(res));
+//   return result;
+// }
+
+// function buildGetQueryCallback(tabel, ejs, cols, id) {
+//   //set to default of all
+//   cols = cols || "*";
+//   return function getAll(req, res) {
+//       const sqlSelect = `SELECT ${cols} FROM ${tabel}`;
+//       //add id if provided
+//       const args = id ? [sqlSelect + `WHERE id=$1`, [id]] : [sqlSelect];
+//       client.query(...args)
+//           .then(result => { res.render(ejs, { result: result.rows }) })
+//           .catch(handelError(res))
+//   }
+// }
+
+
+// ======================================= start app =======================================
+
 
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
