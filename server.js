@@ -112,37 +112,6 @@ async function initialUserDataPull(req, res) {
         .catch(handelError(res));
     });
 
-
-  // //get person top song
-  // await superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0")
-  //   .auth(req.user.accessToken, { type: 'bearer' })
-  //   .set('Accept', 'application/json')
-  //   .set('Content-Type', 'application/json')
-  //   .then(data => {
-
-  //     // getTopSong(); //gets song details from spotify
-  //     superagent.get(`https://api.spotify.com/v1/tracks/${data.body.items[0].id}`)
-  //       .auth(req.user.accessToken, { type: 'bearer' })
-  //       .set('Accept', 'application/json')
-  //       .set('Content-Type', 'application/json')
-  //       .then(data => {
-  //         const sqlString = 'INSERT INTO tracks (track_name, artist, album, release_date, genre, spotify_track_id, preview_url, app_user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8);';
-  //         console.log(user_id);
-  //         const sqlArray = [
-  //           data.body.name,
-  //           data.body.artists[0].name,
-  //           data.body.album.name,
-  //           data.body.album.release_date,
-  //           'todo get genre', //later
-  //           data.body.id,
-  //           data.body.preview_url,
-  //           user_id
-  //         ];
-  //         client.query(sqlString, sqlArray);
-  //       }).catch(handelError(res));
-  //   });
-
-
   // top 50 songs
   superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=50&offset=0")
     .auth(req.user.accessToken, { type: 'bearer' })
@@ -156,7 +125,7 @@ async function initialUserDataPull(req, res) {
         client.query(sqlString, sqlArray)
           .then(dataFromDatabase => {
             if (dataFromDatabase.rows.length === 0) {
-              const sqlString = 'INSERT INTO tracks(track_name, artist, album, release_date, genre, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);';
+              const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genre, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);';
               const sqlArray = [
                 track.name, //track_name
                 track.artists[0].name,
@@ -223,21 +192,22 @@ async function getUserData(req, res) {
   res.render('user_stats', { userObject, tracks });
 }
 
-function getTrackData(req, res) {
-  track = {
-    track_title: 'blah',
-    lyrics: 'we sing words',
-    release_date: '1999',
-    album_cover_url: 'url',
-    artist: 'singer person',
-    popularity: '99',
-    genre: 'pop',
-    album_name: 'dope ep',
-    last_time_user_played: 'date or never',
-    global_play_count: '6712348',
-    users_play_count: '43'
-  };
-  res.render('track_stats', { track });
+async function getTrackData(req, res) {
+  let track;
+  let geniousUrl;
+
+  const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
+  await client.query(sqlSelect)
+    .then(result => track = result.rows[0])
+    .catch(handelError(res));
+
+  //get lyrics
+  const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
+  await superagent.get(search_url)
+    .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
+    .then(result => geniousUrl = result.body.response.hits[0].result.url)
+
+  res.render('track_stats', { track, geniousUrl });
 }
 
 //catchall / 404
