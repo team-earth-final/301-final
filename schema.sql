@@ -19,7 +19,7 @@ CREATE TABLE tracks (
     artist VARCHAR(255),
     album_name VARCHAR(255),
     release_date VARCHAR(255),
-    genre VARCHAR(255),
+    genres VARCHAR(255),
     spotify_track_id VARCHAR(255),
     preview_url VARCHAR(255),
     app_user_id INT,
