@@ -19,7 +19,7 @@ CREATE TABLE tracks (
     id SERIAL PRIMARY KEY,
     track_name VARCHAR(255),
     artist VARCHAR(255),
-    album VARCHAR(255),
+    album_name VARCHAR(255),
     release_date VARCHAR(255),
     genre VARCHAR(255),
     spotify_track_id VARCHAR(255),
@@ -29,6 +29,8 @@ CREATE TABLE tracks (
     global_plays INT,
     user_plays INT,
     popularity INT,
+    last_time_user_played VARCHAR(255),
+    album_cover_url VARCHAR(255),
     CONSTRAINT fk_app_users
       FOREIGN KEY(app_user_id) 
     REFERENCES app_users(id)
