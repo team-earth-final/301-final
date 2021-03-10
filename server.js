@@ -91,17 +91,15 @@ function handelError(res) {
   };
 }
 
-function exampleApiCall(req, res) {
-
+async function exampleApiCall(req, res) {
   //get person top song
-  // getTopSong();
-  superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0")
+  await superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0")
     .auth(req.user.accessToken, { type: 'bearer' })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
 
-      //get song details from spotify
+      // getTopSong(); //gets song details from spotify
       superagent.get(`https://api.spotify.com/v1/tracks/${data.body.items[0].id}`)
         .auth(req.user.accessToken, { type: 'bearer' })
         .set('Accept', 'application/json')
@@ -120,37 +118,81 @@ function exampleApiCall(req, res) {
           client.query(sqlString, sqlArray);
         }).catch(handelError(res));
     });
-
   // get top artist
-  superagent.get("https://api.spotify.com/v1/me/top/artists?limit=1&offset=0")
+  await superagent.get("https://api.spotify.com/v1/me/top/artists?limit=1&offset=0")
     .auth(req.user.accessToken, { type: 'bearer' })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
-      console.log(data.body);
       const sqlString = 'INSERT INTO app_users(fave_artist) VALUES($1);';
       const sqlArray = [
-        data.body.items[0].name, //track_name
+        data.body.items[0].name
       ];
       client.query(sqlString, sqlArray)
         .catch(handelError(res));
     });
-  res.redirect('/');
 
+  // top 50 songs
+  superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=50&offset=0")
+    .auth(req.user.accessToken, { type: 'bearer' })
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .then(data => {
+      data.body.items.forEach(track => {
+        const sqlString = 'SELECT * FROM tracks WHERE track_name =$1';
+        const sqlArray = [track.name];
+        client.query(sqlString, sqlArray)
+          .then(dataFromDatabase => {
+            if (dataFromDatabase.rows.length === 0) {
+              const sqlString = 'INSERT INTO tracks(track_name, artist, album, release_date, genre, spotify_track_id, preview_url) VALUES($1, $2, $3, $4, $5, $6, $7);';
+              const sqlArray = [
+                track.name, //track_name
+                track.artists[0].name,
+                track.album.name,
+                track.album.release_date,
+                'todo get genre', //later
+                track.id,
+                track.preview_url
+              ];
+              client.query(sqlString, sqlArray)
+                .catch(handelError(res));
+            };
+      });
+    })
+  })
+  res.redirect('/')
+} 
+app.get('/getTracks', getTracksFRomDatabase)
+function getTracksFRomDatabase(req, res) {
+        client.query('SELECT * FROM tracks')
+          .then(data => {
+            console.log(data.rows);
+          })
+      }
+
+app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
+function redirectToAboutTeamEarth(req, res) {
+    res.render('aboutTeamEarth')
 }
+
+// todo refernce to individual stat page
 function getlanding(req, res) {
-  res.render('index', { user: req.user });
-}
+        res.render('index', { user: req.user });
+      }
+
 
 async function getUserData(req, res) {
-  const sqlSelect = `SELECT * FROM app_user WHERE id=${req.params.id}`;
+  const sqlSelect = `SELECT * FROM app_users WHERE id=${req.params.id}`;
   client.query(sqlSelect)
-    .then(user => { res.render('Fetzoose_Page', { user: user.rows[0] }) })
+    .then(user => { res.render('user_stats.ejs', { userObject: user.rows[0] }) })
     .catch(handelError(res))
 }
 
+
 //catchall / 404
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
+
+
 
 // ======================================= DB Helpers =======================================
 
@@ -182,4 +224,5 @@ app.use('*', (request, response) => response.send('Sorry, that route does not ex
 
 // ======================================= start app =======================================
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+  app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
