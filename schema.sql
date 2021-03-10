@@ -23,17 +23,9 @@ CREATE TABLE tracks (
     release_date VARCHAR(255),
     genre VARCHAR(255),
     spotify_track_id VARCHAR(255),
-    preview_url VARCHAR(255)
-);
-
-CREATE TABLE users_tracks (
-    id SERIAL PRIMARY KEY,
-    track_id INT,
-    user_id INT,
+    preview_url VARCHAR(255),
+    app_user_id INT,
     CONSTRAINT fk_app_users
-      FOREIGN KEY(user_id) 
-	  REFERENCES app_users(id),
-    CONSTRAINT fk_tracks
-      FOREIGN KEY(track_id) 
-	  REFERENCES tracks(id)
+      FOREIGN KEY(app_user_id) 
+    REFERENCES app_users(id)
 );
