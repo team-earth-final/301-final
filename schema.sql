@@ -6,8 +6,7 @@ CREATE TABLE app_users (
     id SERIAL PRIMARY KEY,
     fave_artist VARCHAR(255),
     display_name VARCHAR(255),
-    spotify_user_id VARCHAR(255) UNIQUE,
-    top_artist VARCHAR(255),
+    spotify_user_id VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE tracks (
