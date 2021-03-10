@@ -64,9 +64,9 @@ app.use(passport.session());
 // ======================================= routs =======================================
 
 app.get('/auth/spotify', authUserWithScopes());
-app.get(authCallbackPath, checkLogin(), (req, res) => { exampleApiCall(req, res); });
+app.get(authCallbackPath, checkLogin(), (req, res) => { initialUserDataPull(req, res); });
 app.get('/', getlanding);
-app.get('/getUserStats/:id', getUserData);
+app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 
 // ======================================= Rout Handelars =======================================
@@ -91,46 +91,58 @@ function handelError(res) {
   };
 }
 
-async function exampleApiCall(req, res) {
-  //get person top song
-  await superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0")
-    .auth(req.user.accessToken, { type: 'bearer' })
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
-    .then(data => {
+async function initialUserDataPull(req, res) {
+  console.log(req.user.accessToken);
 
-      // getTopSong(); //gets song details from spotify
-      superagent.get(`https://api.spotify.com/v1/tracks/${data.body.items[0].id}`)
-        .auth(req.user.accessToken, { type: 'bearer' })
-        .set('Accept', 'application/json')
-        .set('Content-Type', 'application/json')
-        .then(data => {
-          const sqlString = 'INSERT INTO tracks (track_name, artist, album, release_date, genre, spotify_track_id, preview_url) VALUES($1, $2, $3, $4, $5, $6, $7);';
-          const sqlArray = [
-            data.body.name,
-            data.body.artists[0].name,
-            data.body.album.name,
-            data.body.album.release_date,
-            'todo get genre', //later
-            data.body.id,
-            data.body.preview_url
-          ];
-          client.query(sqlString, sqlArray);
-        }).catch(handelError(res));
-    });
+  let user_id;
   // get top artist
   await superagent.get("https://api.spotify.com/v1/me/top/artists?limit=1&offset=0")
     .auth(req.user.accessToken, { type: 'bearer' })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
-      const sqlString = 'INSERT INTO app_users(fave_artist) VALUES($1);';
+      const sqlString = 'INSERT INTO app_users(fave_artist, spotify_user_id) VALUES($1, $2) ON CONFLICT(spotify_user_id) DO UPDATE SET fave_artist=EXCLUDED.fave_artist RETURNING id;';
       const sqlArray = [
-        data.body.items[0].name
+        data.body.items[0].name,
+        req.user.id
       ];
       client.query(sqlString, sqlArray)
+        .then(result => {
+          user_id = result.rows[0].id;
+        })
         .catch(handelError(res));
     });
+
+
+  // //get person top song
+  // await superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0")
+  //   .auth(req.user.accessToken, { type: 'bearer' })
+  //   .set('Accept', 'application/json')
+  //   .set('Content-Type', 'application/json')
+  //   .then(data => {
+
+  //     // getTopSong(); //gets song details from spotify
+  //     superagent.get(`https://api.spotify.com/v1/tracks/${data.body.items[0].id}`)
+  //       .auth(req.user.accessToken, { type: 'bearer' })
+  //       .set('Accept', 'application/json')
+  //       .set('Content-Type', 'application/json')
+  //       .then(data => {
+  //         const sqlString = 'INSERT INTO tracks (track_name, artist, album, release_date, genre, spotify_track_id, preview_url, app_user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8);';
+  //         console.log(user_id);
+  //         const sqlArray = [
+  //           data.body.name,
+  //           data.body.artists[0].name,
+  //           data.body.album.name,
+  //           data.body.album.release_date,
+  //           'todo get genre', //later
+  //           data.body.id,
+  //           data.body.preview_url,
+  //           user_id
+  //         ];
+  //         client.query(sqlString, sqlArray);
+  //       }).catch(handelError(res));
+  //   });
+
 
   // top 50 songs
   superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=50&offset=0")
@@ -138,13 +150,14 @@ async function exampleApiCall(req, res) {
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .then(data => {
+      let rank = 1;
       data.body.items.forEach(track => {
         const sqlString = 'SELECT * FROM tracks WHERE track_name =$1';
         const sqlArray = [track.name];
         client.query(sqlString, sqlArray)
           .then(dataFromDatabase => {
             if (dataFromDatabase.rows.length === 0) {
-              const sqlString = 'INSERT INTO tracks(track_name, artist, album, release_date, genre, spotify_track_id, preview_url) VALUES($1, $2, $3, $4, $5, $6, $7);';
+              const sqlString = 'INSERT INTO tracks(track_name, artist, album, release_date, genre, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);';
               const sqlArray = [
                 track.name, //track_name
                 track.artists[0].name,
@@ -152,10 +165,16 @@ async function exampleApiCall(req, res) {
                 track.album.release_date,
                 'todo get genre', //later
                 track.id,
-                track.preview_url
+                track.preview_url,
+                user_id,
+                rank,
+                '-1', //later
+                '-1', //potential stretch
+                track.popularity
               ];
               client.query(sqlString, sqlArray)
                 .catch(handelError(res));
+              rank++;
             };
           });
       })
@@ -166,7 +185,6 @@ app.get('/getTracks', getTracksFRomDatabase)
 function getTracksFRomDatabase(req, res) {
   client.query('SELECT * FROM tracks')
     .then(data => {
-      console.log(data.rows);
     })
 }
 
@@ -180,18 +198,22 @@ function getlanding(req, res) {
   res.render('index', { user: req.user });
 }
 
-
 async function getUserData(req, res) {
-  const sqlSelect = `SELECT * FROM app_users WHERE id=${req.params.id}`;
-  client.query(sqlSelect)
-    .then(user => {
-      tracks = [
-        { track_name: 'track1', genre: 'pho', artist: "a1", album: 'ep1', release_date: '12/12/1221', album_cover_url: 'https://i.pinimg.com/originals/c5/30/52/c53052a1bfbd92bcd48b63389d5de8bf.jpg', rank: '1' },
-        { track_name: 'track2', genre: 'pho', artist: "a2", album: 'ep4', release_date: '12/12/1999', album_cover_url: 'https://i.pinimg.com/originals/c5/30/52/c53052a1bfbd92bcd48b63389d5de8bf.jpg', rank: '2' }
-      ]
-      res.render('user_stats', { userObject: user.rows[0], tracks });
-    })
+  let userObject;
+  let tracks;
+
+  let sqlSelect = `SELECT * FROM app_users WHERE id=${req.params.id};`;
+  await client.query(sqlSelect)
+    .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
+
+  sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
+  console.log(sqlSelect);
+  await client.query(sqlSelect)
+    .then(result => { tracks = result.rows })
+    .catch(handelError(res))
+
+  res.render('user_stats', { userObject, tracks });
 }
 
 function getTrackData(req, res) {
