@@ -1,5 +1,4 @@
 const userObjectArray = [];
-
 function MakeUserObject (data){
 
   this.first_name = data.  first_name
@@ -16,8 +15,6 @@ function MakeUserObject (data){
 
 }
 
-const newTrackArray = [];
-
 function MakeNewTrack (data) {
   this.track_name = data. track_name  
   this.artist = data.  artist 
@@ -26,5 +23,4 @@ function MakeNewTrack (data) {
   this.genre = data.  genre 
   this.spotify_track_id = data.  spotify_track_id 
   this.preview_url = data.   preview_url
-  newTrackArray.push(this);
 }

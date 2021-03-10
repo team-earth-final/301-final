@@ -170,6 +170,11 @@ function getTracksFRomDatabase(req, res) {
           })
       }
 
+app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
+function redirectToAboutTeamEarth(req, res) {
+    res.render('aboutTeamEarth')
+}
+
 // todo refernce to individual stat page
 function getlanding(req, res) {
         res.render('index', { user: req.user });
