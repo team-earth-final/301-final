@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Lyfe</title>
+    <link rel="stylesheet" href="/static/styles/reset.css">
+    <link rel="stylesheet" href="/static/styles/base.css">
+    <link rel="stylesheet" href="/static/styles/layout.css">
+    <link rel="stylesheet" href="/static/styles/modules.css">
+</head>
+
+<body>
+    <%- include('partials/header.ejs') %>
+    <a href="/auth/spotify">Login with Spotify</a>
+
+    <div id="individualTrackDiv">
+      <h2>this is <%= userObject %></h2>
+      <!-- <% userObject.forEach(individualUser => { %> -->
+        <ul>
+          <li>
+            <img src="<%= track.album_cover_url%>" alt="">              
+     
+   
+            <h4 class="track_title">Song name: <%= track.track_title %></h4>          
+            <h4 class="top_album">which is on the Album: <%= track.top_album %></h4>          
+            <h4 class="release_date">and was released on: <%= track.release_date %></h4>          
+            <form action="/track" method="POST" >
+                <input type="hidden" name="top_track" value="<%= track.top_track %>">
+                <input type="submit" value="More info about this Song" class="showTrackBtn">
+            </form>
+            <form action="/artist" method="POST" >
+              <input type="hidden" name="top_artist" value="<%= track.top_artist %>">
+              <input type="submit" value="More info about this Artist" class="showTrackBtn">
+          </form>
+          </li>
+       </ul>
+
+       return top tracks obj: [{track_name, genera, artist, album, release_date, album_cover_url, rank}, {track_name, genera, artist, album, release_date, album_cover_url, rank}...]
+
+    </div>
+
+
+    
+</body>
+
+</html>
