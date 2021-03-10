@@ -17,15 +17,16 @@
     <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> 
 
     <div id="UserResultsDiv">
-      <h2>this is <%= userObject.user_name %></h2>
+      <h2>this is <%= userObject.display_name %></h2>
         <ul>
           <li>
             <img src="<%= userObject.album_cover_url %>" alt="">              
-            <h4 class="top_artist">your favorite Artist is: <%= userObject.top_artist %></h4>          
+            <h4 class="fave_artist">your favorite Artist is: <%= userObject.fave_artist %></h4>          
+            <h4 class="track_name">your favorite Song is: <%= userObject.track_name %></h4>          
             <h4 class="top_album">which is on the Album: <%= userObject.top_album %></h4>          
             <h4 class="release_date">and was released on: <%= userObject.release_date %></h4>          
-            <form action="/getTrackData/:<%= userObject.track_id%>" method="POST" >
-                <input type="hidden" name="top_track" value="<%= userObject.top_track %>">
+            <form action="/getTrackData/:<%= tracks.track.id%>" method="POST" >
+                <input type="hidden" name="top_name" value="<%= userObject.top_name %>">
                 <input class="grid-item5" type="submit" value="More info about this Song" class="showTrackBtn">
             </form>
             <form action="/artist" method="POST" >
