@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="/static/styles/modules.css">
 </head>
 
-<body id="othersStat">
-  <%- include('partials/header.ejs') %>
-
+<body>
+    <%- include('partials/header.ejs') %>
     <div id="searchResultsDivOthers">
       <!-- <h2>this is <%= userObjects %></h2> -->
       <% userObjects.forEach(user => { %>
@@ -29,7 +28,6 @@
        </ul>
        <%  }) %>  
     </div>
-
 </body>
 
 </html>
