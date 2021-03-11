@@ -134,24 +134,34 @@ async function initialUserDataPull(req, res) {
                 .set('Content-Type', 'application/json')
                 .then(data => {
                   let genres = data.body.genres.join(' | ')
-                  const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);';
-                  const sqlArray = [
-                    track.name,
-                    track.artists[0].name,
-                    track.album.name,
-                    track.album.release_date,
-                    genres,
-                    track.id,
-                    track.preview_url,
-                    user_id,
-                    rank,
-                    '-1', //later
-                    '-1', //potential stretch
-                    track.popularity
-                  ];
-                  client.query(sqlString, sqlArray)
-                    .catch(handelError(res));
-                  rank++;
+                  let album_cover_url;
+                  //get artowrk
+                  const search_url = 'https://api.genius.com/search?q=' + track.name + ' ' + track.album.name
+                  superagent.get(search_url)
+                    .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
+                    .then(result => {
+                      console.log(result.body.response.hits[0].result.song_art_image_thumbnail_url);
+                      album_cover_url = result.body.response.hits[0].result.song_art_image_thumbnail_url;
+                      const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
+                      const sqlArray = [
+                        track.name,
+                        track.artists[0].name,
+                        track.album.name,
+                        track.album.release_date,
+                        genres,
+                        track.id,
+                        track.preview_url,
+                        user_id,
+                        rank,
+                        '-1', //later
+                        '-1', //potential stretch
+                        track.popularity,
+                        album_cover_url
+                      ];
+                      client.query(sqlString, sqlArray)
+                        .catch(handelError(res));
+                      rank++;
+                    })
                 });
             };
           });
@@ -186,19 +196,23 @@ async function getUserData(req, res) {
   WHERE app_users.id=${req.params.id}
   AND tracks.user_rank =1;`;
   await client.query(sqlSelect)
-    .then(result => { userObject = result.rows[0] })    
+    .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
-  sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
-    await client.query(sqlSelect)
+  if (!(userObject)){
+    res.send('Sorry, that route does not exist.');
+    return;
+  }
+    sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
+  await client.query(sqlSelect)
     .then(result => { tracks = result.rows; })
     .catch(handelError(res));
-    tracks = tracks ? tracks : [];
+  tracks = tracks ? tracks : [];
   res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
 }
 
 async function getTrackData(req, res) {
   let track;
-  let geniousUrl;
+  let geniousData;
 
   const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
   await client.query(sqlSelect)
@@ -209,9 +223,12 @@ async function getTrackData(req, res) {
   const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
   await superagent.get(search_url)
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
-    .then(result => geniousUrl = result.body.response.hits[0].result.url)
+    .then(result => {
+      console.log(result.body.response.hits[0].result);
+      geniousData = result.body.response.hits[0].result
+    })
 
-  res.render('track_details', { track, geniousUrl, title: 'Song Details' });
+  res.render('track_details', { track, geniousData });
 }
 
 async function getOthersData(req, res) {
@@ -220,7 +237,7 @@ async function getOthersData(req, res) {
   await client.query(sqlSelect)
     .then(result => { userObjects = result.rows })
     .catch(handelError(res));
-    console.log(userObjects);
+  console.log(userObjects);
   res.render('others_stats', { userObjects, title: 'Other Users Stats' });
 }
 
