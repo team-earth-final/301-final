@@ -86,6 +86,7 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
+    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err, title: 'Error' });
   };
@@ -125,9 +126,7 @@ async function initialUserDataPull(req, res) {
         const sqlArray = [track.name];
         client.query(sqlString, sqlArray)
           .then(dataFromDatabase => {
-            console.log('do the check');
             if (dataFromDatabase.rows.length === 0) {
-              console.log('made it');
               //get genre
               superagent.get(`https://api.spotify.com/v1/artists/${track.artists[0].id}`)
                 .auth(req.user.accessToken, { type: 'bearer' })
@@ -150,7 +149,6 @@ async function initialUserDataPull(req, res) {
                     '-1', //potential stretch
                     track.popularity
                   ];
-                  console.log(sqlArray);
                   client.query(sqlString, sqlArray)
                     .catch(handelError(res));
                   rank++;
@@ -175,10 +173,10 @@ function getlanding(req, res) {
 async function getUserData(req, res) {
   let userObject;
   let tracks;
-
   let sqlSelect = `SELECT
   fave_artist,
   display_name,
+  app_users.id,
   spotify_user_id,
   track_name,
   release_date,
@@ -188,14 +186,14 @@ async function getUserData(req, res) {
   WHERE app_users.id=${req.params.id}
   AND tracks.user_rank =1;`;
   await client.query(sqlSelect)
-    .then(result => { userObject = result.rows[0] })
+    .then(result => { userObject = result.rows[0] })    
     .catch(handelError(res))
-
   sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
-  await client.query(sqlSelect)
-    .then(result => { tracks = result.rows })
-    .catch(handelError(res))
-  res.render('user_stats', { userObject, tracks });
+    await client.query(sqlSelect)
+    .then(result => { tracks = result.rows; })
+    .catch(handelError(res));
+    tracks = tracks ? tracks : [];
+  res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
 }
 
 async function getTrackData(req, res) {
