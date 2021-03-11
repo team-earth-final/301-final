@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Lyfe</title>
+  <link rel="stylesheet" href="/static/styles/reset.css">
+  <link rel="stylesheet" href="/static/styles/base.css">
+  <link rel="stylesheet" href="/static/styles/layout.css">
+  <link rel="stylesheet" href="/static/styles/modules.css">
+</head>
+
+<body>
+  <%- include('partials/header.ejs') %>
+  <div>
+    <img src="<%= track.album_cover_url %>" alt="">
+    <h1><%= track.track_name %> by <%= track.artist %></h1>
+    <h2>off of: <%= track.album_name %> released <%= track.release_date %></h2>
+    <div>genres: <%= track.genres %></div>
+    <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div>
+    <div>popularity rating: <%= track.popularity %></div>
+    <div>link to the lyrics: <a href="<%= geniousUrl %>">Here</a></div>
+
+  </div>
+</body>
+
+</html>
