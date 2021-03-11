@@ -14,26 +14,20 @@
 
 <body>
     <%- include('partials/header.ejs') %>
-
     <div id="searchResultsDivOthers">
-      <h2>this is <%= userObjects %></h2>
-      <% userObjects.forEach(name => { %>
+      <!-- <h2>this is <%= userObjects %></h2> -->
+      <% userObjects.forEach(user => { %>
         <ul>
-          <li>
-            <img src="<%= name.preview_url%>" alt="">              
-            <h3 class="user_name"><%= name.display_name %></h3>
-            <a href="getUserData"></a>               
-             <form action="getUserData" method="POST" >
-                <input type="hidden" name="top_track" value="<%= name.top_track %>">
+          <li>           
+            <h3 class="user_name">This Is <%= user.display_name %></h3>
+            <!-- <a href="getUserData/<%= user.id %>"></a>                -->
+             <form action="getUserData/<%= user.id %>" method="GET" >
                 <input type="submit" value="View this user's Stats" class="showTrackBtn">
             </form>
           </li>
        </ul>
        <%  }) %>  
     </div>
-
-
-    
 </body>
 
 </html>

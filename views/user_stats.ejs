@@ -12,10 +12,8 @@
     <link rel="stylesheet" href="/static/styles/modules.css">
 </head>
 
-<body>
+<body id="userStats">
     <%- include('partials/header.ejs') %>
-    <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> 
-    <a href="/auth/spotify">Login with Spotify</a>
 
     <div id="UserResultsDiv">
       <h2>this is <%= userObject.display_name %>'s stats</h2>
@@ -34,14 +32,9 @@
             <h4 class="last_time_user_played"><%= userObject.display_name %> last time you played this song: <%= tracks[i].last_time_user_played %></h4>
             <h4 class="album_name">which is on the Album: <%= tracks[i].album_name %></h4>
        
-            <form action="/getTrackData/<%= tracks[i].id%>" method="POST" >
-                <input type="hidden" name="track_name" value="<%= tracks[i].track_name %>">
+            <form action="/getTrackData/<%= tracks[i].id%>" method="GET">
                 <input class="grid-item5" type="submit" value="More info about this Song" class="showTrackBtn">
             </form>
-            <!-- <form action="/artist" method="POST" >
-              <input type="hidden" name="fave_artist" value="<%= userObject.fave_artist %>">
-              <input class="grid-item5" type="submit" value="More info about this Artist" class="showTrackBtn">
-          </form> -->
           </li>
        </ul>
        <% } %>
