@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Lyfe</title>
+    <link rel="stylesheet" href="/static/styles/reset.css">
+    <link rel="stylesheet" href="/static/styles/base.css">
+    <link rel="stylesheet" href="/static/styles/layout.css">
+    <link rel="stylesheet" href="/static/styles/modules.css">
+</head>
+
+<body>
+    <%- include('partials/header.ejs') %>
+    <div id="searchResultsDivOthers">
+      <!-- <h2>this is <%= userObjects %></h2> -->
+      <% userObjects.forEach(user => { %>
+        <ul>
+          <li>           
+            <h3 class="user_name">This Is <%= user.display_name %></h3>
+            <!-- <a href="getUserData/<%= user.id %>"></a>                -->
+             <form action="getUserData/<%= user.id %>" method="GET" >
+                <input type="submit" value="View this user's Stats" class="showTrackBtn">
+            </form>
+          </li>
+       </ul>
+       <%  }) %>  
+    </div>
+</body>
+
+</html>
