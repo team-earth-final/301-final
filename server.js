@@ -115,7 +115,7 @@ async function initialUserDataPull(req, res) {
     });
 
   // top 50 songs
-  superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=50&offset=0")
+  await superagent.get("https://api.spotify.com/v1/me/top/tracks?limit=50&offset=0")
     .auth(req.user.accessToken, { type: 'bearer' })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
@@ -157,7 +157,7 @@ async function initialUserDataPull(req, res) {
           });
       })
     })
-  res.redirect('/')
+  res.redirect(`/getUserData/${user_id}`)
 }
 
 app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
@@ -216,7 +216,7 @@ async function getTrackData(req, res) {
 
 async function getOthersData(req, res) {
   let userObjects;
-  let sqlSelect = `SELECT display_name FROM app_users`;
+  let sqlSelect = `SELECT display_name, id FROM app_users`;
   await client.query(sqlSelect)
     .then(result => { userObjects = result.rows })
     .catch(handelError(res));

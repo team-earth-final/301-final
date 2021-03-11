@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/static/styles/modules.css">
 </head>
 
-<body>
+<body id="trackDetails">
   <%- include('partials/header.ejs') %>
   <div>
     <img src="<%= track.album_cover_url %>" alt="">
@@ -22,7 +22,6 @@
     <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div>
     <div>popularity rating: <%= track.popularity %></div>
     <div>link to the lyrics: <a href="<%= geniousUrl %>">Here</a></div>
-
   </div>
 </body>
 
