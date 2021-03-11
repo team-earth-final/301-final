@@ -126,9 +126,7 @@ async function initialUserDataPull(req, res) {
         const sqlArray = [track.name];
         client.query(sqlString, sqlArray)
           .then(dataFromDatabase => {
-            // console.log('do the check');
             if (dataFromDatabase.rows.length === 0) {
-              console.log('made it');
               //get genre
               superagent.get(`https://api.spotify.com/v1/artists/${track.artists[0].id}`)
                 .auth(req.user.accessToken, { type: 'bearer' })
@@ -151,7 +149,6 @@ async function initialUserDataPull(req, res) {
                     '-1', //potential stretch
                     track.popularity
                   ];
-                  // console.log(sqlArray);
                   client.query(sqlString, sqlArray)
                     .catch(handelError(res));
                   rank++;
@@ -193,8 +190,7 @@ async function getUserData(req, res) {
     .catch(handelError(res))
   sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
     await client.query(sqlSelect)
-    .then(result => { tracks = result.rows;
-      console.log(tracks); })
+    .then(result => { tracks = result.rows; })
     .catch(handelError(res));
     tracks = tracks ? tracks : [];
   res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
