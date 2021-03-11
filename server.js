@@ -167,7 +167,7 @@ function redirectToAboutTeamEarth(req, res) {
 
 // todo refernce to individual stat page
 function getlanding(req, res) {
-  res.render('index', { user: req.user });
+  res.render('index', { user: req.user , title: 'Welcome to music-lyfe'});
 }
 
 async function getUserData(req, res) {
