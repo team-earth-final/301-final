@@ -69,8 +69,17 @@ app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 app.get('/getOthersData', getOthersData);
+app.delete('/UserData/:id', deleteUser)
 
 // ======================================= Rout Handelars =======================================
+
+function deleteUser(req, res) {
+  
+}
+
+function deleteUser(req, res) {
+  
+}
 
 function checkLogin() {
   return passport.authenticate('spotify', { failureRedirect: '/login' });
@@ -175,7 +184,37 @@ function redirectToAboutTeamEarth(req, res) {
 
 // todo refernce to individual stat page
 function getlanding(req, res) {
-  res.render('index', { user: req.user, title: 'Landing Page' })
+  res.render('index', { user: req.user });
+}
+
+async function getUserData(req, res) {
+  let userObject;
+  let tracks;
+  let sqlSelect = `SELECT
+  fave_artist,
+  display_name,
+  app_users.id,
+  spotify_user_id,
+  track_name,
+  release_date,
+  preview_url
+  FROM app_users 
+  LEFT OUTER JOIN tracks ON tracks.app_user_id=app_users.id
+  WHERE app_users.id=${req.params.id}
+  AND tracks.user_rank =1;`;
+  await client.query(sqlSelect)
+    .then(result => { userObject = result.rows[0] })
+    .catch(handelError(res))
+  if (!(userObject)){
+    res.send('Sorry, that route does not exist.');
+    return;
+  }
+    sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
+  await client.query(sqlSelect)
+    .then(result => { tracks = result.rows; })
+    .catch(handelError(res));
+  tracks = tracks ? tracks : [];
+  res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
 }
 
 async function getTrackData(req, res) {
