@@ -69,8 +69,17 @@ app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 app.get('/getOthersData', getOthersData);
+app.delete('/UserData/:id', deleteUser)
 
 // ======================================= Rout Handelars =======================================
+
+function deleteUser(req, res) {
+  
+}
+
+function deleteUser(req, res) {
+  
+}
 
 function checkLogin() {
   return passport.authenticate('spotify', { failureRedirect: '/login' });
