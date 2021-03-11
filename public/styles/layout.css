@@ -24,8 +24,12 @@ header{
 
 /* track_details */
 
-.track_details{
+#trackDetails > div{
+margin: auto;
+}
 
+#trackDetails > div > img {
+  max-width: 350px;
 }
 
 /* user_Stats */

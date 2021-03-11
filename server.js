@@ -198,7 +198,7 @@ async function getUserData(req, res) {
 
 async function getTrackData(req, res) {
   let track;
-  let geniousUrl;
+  let geniousData;
 
   const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
   await client.query(sqlSelect)
@@ -209,9 +209,11 @@ async function getTrackData(req, res) {
   const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
   await superagent.get(search_url)
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
-    .then(result => geniousUrl = result.body.response.hits[0].result.url)
+    .then(result => {
+      console.log(result.body.response.hits[0].result);
+      geniousData = result.body.response.hits[0].result})
 
-  res.render('track_details', { track, geniousUrl, title: 'Song Details' });
+  res.render('track_details', { track, geniousData });
 }
 
 async function getOthersData(req, res) {
