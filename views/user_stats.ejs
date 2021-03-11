@@ -13,28 +13,37 @@
 </head>
 
 <body>
-    <%- include('./partials/header.ejs') %>
+    <%- include('partials/header.ejs') %>
     <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> 
 
     <div id="UserResultsDiv">
-      <h2>this is <%= userObject.display_name %></h2>
+      <h2>this is <%= userObject.display_name %>'s stats</h2>
+      <h4 class="fave_artist">your favorite Artist is: <%= userObject.fave_artist %></h4>
+
+      <% for (let i=0; i < tracks.length; i++) { %>
         <ul>
           <li>
-            <img src="<%= userObject.album_cover_url %>" alt="">              
-            <h4 class="fave_artist">your favorite Artist is: <%= userObject.fave_artist %></h4>          
-            <h4 class="track_name">your favorite Song is: <%= userObject.track_name %></h4>          
-            <h4 class="top_album">which is on the Album: <%= userObject.top_album %></h4>          
-            <h4 class="release_date">and was released on: <%= userObject.release_date %></h4>          
-            <form action="/getTrackData/:<%= tracks.track.id%>" method="POST" >
-                <input type="hidden" name="top_name" value="<%= userObject.top_name %>">
+            <img src="<%= tracks[i].album_cover_url %>" alt="">              
+            <h4 class="track_name">your favorite Song is: <%= tracks[i].track_name %></h4>          
+            <h4 class="album_name">which is on the Album: <%= tracks[i].artist %></h4>
+            <h4 class="release_date">which was released on: <%= tracks[i].release_date %></h4>
+            <h4 class="user_rank">and has a user rank of: <%= tracks[i].user_rank %></h4>
+            <h4 class="global_plays">which was played globally: <%= tracks[i].global_plays %></h4>
+            <h4 class="user_plays">which was played by <%= userObject.display_name %>: <%= tracks[i].user_plays %></h4>
+            <h4 class="last_time_user_played"><%= userObject.display_name %> last time you played this song: <%= tracks[i].last_time_user_played %></h4>
+            <h4 class="album_name">which is on the Album: <%= tracks[i].album_name %></h4>
+       
+            <form action="/getTrackData/:<%= tracks[i].id%>" method="POST" >
+                <input type="hidden" name="track_name" value="<%= tracks[i].track_name %>">
                 <input class="grid-item5" type="submit" value="More info about this Song" class="showTrackBtn">
             </form>
             <form action="/artist" method="POST" >
-              <input type="hidden" name="top_artist" value="<%= userObject.top_artist %>">
+              <input type="hidden" name="fave_artist" value="<%= userObject.fave_artist %>">
               <input class="grid-item5" type="submit" value="More info about this Artist" class="showTrackBtn">
           </form>
           </li>
        </ul>
+       <% } %>
 
 
     </div>
