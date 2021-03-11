@@ -86,7 +86,6 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
-    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err, title: 'Error' });
   };
@@ -140,7 +139,6 @@ async function initialUserDataPull(req, res) {
                   superagent.get(search_url)
                     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
                     .then(result => {
-                      console.log(result.body.response.hits[0].result.song_art_image_thumbnail_url);
                       album_cover_url = result.body.response.hits[0].result.song_art_image_thumbnail_url;
                       const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
                       const sqlArray = [
@@ -224,7 +222,6 @@ async function getTrackData(req, res) {
   await superagent.get(search_url)
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
     .then(result => {
-      console.log(result.body.response.hits[0].result);
       geniousData = result.body.response.hits[0].result
     })
 
@@ -237,7 +234,6 @@ async function getOthersData(req, res) {
   await client.query(sqlSelect)
     .then(result => { userObjects = result.rows })
     .catch(handelError(res));
-  console.log(userObjects);
   res.render('others_stats', { userObjects, title: 'Other Users Stats' });
 }
 
