@@ -62,20 +62,23 @@ main {
 h1 {
   display: flex;
   justify-content: center;
-  font-family: "Dancing Script", cursive;
-  font-size: xx-large;
+  font-family: sans-serif;
+  font-size: 32px;
   padding: 40px;
 }
 img {
   border-radius: 5px;
-  width: 400px;
-  height: 400px;
 }
 h2 {
   padding: 10px;
   font-size: 34px;
   font-family: cursive;
 }
+
+h2.title {
+  text-align: center;
+}
+
 p {
   padding: 10px;
   font-family: sans-serif;
@@ -84,7 +87,6 @@ p {
 .center {
   display: flex;
   justify-content: center;
-  margin: 24px 0;
 }
 .card-container {
   height: 400px;
@@ -144,6 +146,11 @@ p {
   padding: 0;
 }
 
+img.about-us {
+  width: 400px;
+  height: 400px;
+}
+
 .connect {
   display: flex;
   justify-content: space-evenly;
@@ -152,14 +159,20 @@ p {
 img.authors-social {
   /* position: absolute; */
   /* bottom: 20px; */
-  height: 30px;
-  width: 30px;
-  /* margin-top: -70px; */
+  height: 40px;
+  width: 40px;
+  margin-top: -20px;
+  box-shadow: 0 0 55px 25px #f2ff0400;
+  border: solid 3px #f2ff0400;
 }
-.authors-social a:hover {
+
+img.authors-social:hover {
   border: 3px solid white;
   /* filter: invert(100%);
 -webkit-filter: invert(100%); */
+  box-shadow: 0 0 55px 25px #f2ff044f;
+  border: solid 3px #f2ff044f;
+  opacity: 0.8;
 }
 footer {
   display: flex;
