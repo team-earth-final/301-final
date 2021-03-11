@@ -3,7 +3,7 @@ console.log('sanity 1')
 window.onSpotifyWebPlaybackSDKReady = () => {
   const token = 'BQC3r2eU-CQfSGwa-w0FOHarhcWs4G9letH4psaOSPyeNkj1YUTzIRn0mp5RDoWsBo4JcDmQSNaLewp0IfEv44Rxs3D2X1_gmhJDeWLCf66-kG9HHt0fNkNln5QzwV24OPoT1Xgh4H3TRoxx-q2mccfCIlkyEk-Exyk'; //need one
   const player = new Spotify.Player({
-    name: 'Web Playback SDK Quick Start Player',
+    name: 'potato',
     getOAuthToken: cb => { cb(token); }
   });
 
