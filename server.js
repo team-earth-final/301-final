@@ -136,31 +136,32 @@ async function initialUserDataPull(req, res) {
                   let genres = data.body.genres.join(' | ')
                   let album_cover_url;
                   //get artowrk
-                  const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
-                  await superagent.get(search_url)
+                  const search_url = 'https://api.genius.com/search?q=' + track.name + ' ' + track.album.name
+                  superagent.get(search_url)
                     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
                     .then(result => {
-                      album_cover_url = result.body.response.hits[0].result.song_art_image_url;
+                      console.log(result.body.response.hits[0].result.song_art_image_thumbnail_url);
+                      album_cover_url = result.body.response.hits[0].result.song_art_image_thumbnail_url;
+                      const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
+                      const sqlArray = [
+                        track.name,
+                        track.artists[0].name,
+                        track.album.name,
+                        track.album.release_date,
+                        genres,
+                        track.id,
+                        track.preview_url,
+                        user_id,
+                        rank,
+                        '-1', //later
+                        '-1', //potential stretch
+                        track.popularity,
+                        album_cover_url
+                      ];
+                      client.query(sqlString, sqlArray)
+                        .catch(handelError(res));
+                      rank++;
                     })
-                  const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
-                  const sqlArray = [
-                    track.name,
-                    track.artists[0].name,
-                    track.album.name,
-                    track.album.release_date,
-                    genres,
-                    track.id,
-                    track.preview_url,
-                    user_id,
-                    rank,
-                    '-1', //later
-                    '-1', //potential stretch
-                    track.popularity,
-                    album_cover_url
-                  ];
-                  client.query(sqlString, sqlArray)
-                    .catch(handelError(res));
-                  rank++;
                 });
             };
           });
@@ -197,7 +198,11 @@ async function getUserData(req, res) {
   await client.query(sqlSelect)
     .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
-  sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
+  if (!(userObject)){
+    res.send('Sorry, that route does not exist.');
+    return;
+  }
+    sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
   await client.query(sqlSelect)
     .then(result => { tracks = result.rows; })
     .catch(handelError(res));
