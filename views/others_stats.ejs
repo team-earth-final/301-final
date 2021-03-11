@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Lyfe</title>
+    <link rel="stylesheet" href="/static/styles/reset.css">
+    <link rel="stylesheet" href="/static/styles/base.css">
+    <link rel="stylesheet" href="/static/styles/layout.css">
+    <link rel="stylesheet" href="/static/styles/modules.css">
+</head>
+
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <div id="searchResultsDivOthers">
+      <h2>this is <%= userObjects %></h2>
+      <% userObjects.forEach(name => { %>
+        <ul>
+          <li>
+            <img src="<%= name.preview_url%>" alt="">              
+            <h3 class="user_name"><%= name.display_name %></h3>
+            <a href="getUserData"></a>               
+             <form action="getUserData" method="POST" >
+                <input type="hidden" name="top_track" value="<%= name.top_track %>">
+                <input type="submit" value="View this user's Stats" class="showTrackBtn">
+            </form>
+          </li>
+       </ul>
+       <%  }) %>  
+    </div>
+
+
+    
+</body>
+
+</html>

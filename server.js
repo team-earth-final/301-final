@@ -68,6 +68,7 @@ app.get(authCallbackPath, checkLogin(), (req, res) => { initialUserDataPull(req,
 app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
+app.get('/getOthersData', getOthersData);
 
 // ======================================= Rout Handelars =======================================
 
@@ -215,6 +216,16 @@ async function getTrackData(req, res) {
     .then(result => geniousUrl = result.body.response.hits[0].result.url)
 
   res.render('track_details', { track, geniousUrl, title: 'Song Details' });
+}
+
+async function getOthersData(req, res) {
+  let userObjects;
+  let sqlSelect = `SELECT display_name FROM app_users`;
+  await client.query(sqlSelect)
+    .then(result => { userObjects = result.rows })
+    .catch(handelError(res));
+    console.log(userObjects);
+  res.render('others_stats', { userObjects, title: 'Other Users Stats' });
 }
 
 //catchall / 404
