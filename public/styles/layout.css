@@ -1,18 +1,19 @@
-*{
+/* *{
   background: rgb(179,179,179);
 background: linear-gradient(90deg, rgba(179,179,179,0.850577731092437) 0%, rgba(157,190,190,1) 38%, rgba(18,19,19,1) 100%);
-/* font-family: 'Redressed', cursive; */
+font-family: 'Redressed', cursive;
 background-size: 100%;
-}
+} */
 
 body  {
-   text-align: center;
+   text-align: left;
   
 }
 
 /* header */
 
-header{
+#partialsHeader{
+
 
 }
 
@@ -55,6 +56,17 @@ background-color: rgba(209, 248, 246, 0.1);
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
+}
+h1.grid-item1{
+  color:rgb(58, 175, 204);
+  font-size: 50px;
+  font-weight: 200;
+  text-align: center;
+  width: 30%;
+}
+#indexPage .grid-item5{
+width: 200px;
+margin-left: 200px;
 }
 
 
