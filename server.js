@@ -212,7 +212,7 @@ async function getTrackData(req, res) {
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
     .then(result => geniousUrl = result.body.response.hits[0].result.url)
 
-  res.render('track_stats', { track, geniousUrl });
+  res.render('track_details', { track, geniousUrl, title: 'Song Details' });
 }
 
 //catchall / 404
