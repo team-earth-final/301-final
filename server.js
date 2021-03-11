@@ -199,34 +199,22 @@ async function getUserData(req, res) {
   res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
 }
 
-function getTrackData(req, res) {
-  let track = [ {
-    track_title: 'blah',
-    lyrics: 'we sing words',
-    release_date: '1999',
-    album_cover_url: 'url',
-    artist: 'singer person',
-    popularity: '99',
-    genre: 'pop',
-    album_name: 'dope ep',
-    last_time_user_played: 'date or never',
-    global_play_count: '6712348',
-    users_play_count: '43'
-  }, 
-  {
-    track_title: 'blah',
-    lyrics: 'we sing words',
-    release_date: '1999',
-    album_cover_url: 'url',
-    artist: 'singer person',
-    popularity: '99',
-    genre: 'pop',
-    album_name: 'dope ep',
-    last_time_user_played: 'date or never',
-    global_play_count: '6712348',
-    users_play_count: '43'
-  } ];
-  res.render('track_stats', { track });
+async function getTrackData(req, res) {
+  let track;
+  let geniousUrl;
+
+  const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
+  await client.query(sqlSelect)
+    .then(result => track = result.rows[0])
+    .catch(handelError(res));
+
+  //get lyrics
+  const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
+  await superagent.get(search_url)
+    .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
+    .then(result => geniousUrl = result.body.response.hits[0].result.url)
+
+  res.render('track_details', { track, geniousUrl, title: 'Song Details' });
 }
 
 //catchall / 404

@@ -3,24 +3,38 @@
 background: linear-gradient(90deg, rgba(179,179,179,0.850577731092437) 0%, rgba(157,190,190,1) 38%, rgba(18,19,19,1) 100%);
 font-family: 'Redressed', cursive;
 background-size: 100%;
+size: auto;
 }
 
-body, .grid-container  {
+
+body {
    text-align: center;
+   
+  }
   
+
+div, .grid-item1, .grid-item2, .grid-item3, .grid-item4, .grid-item5 {
+  margin: 30px;
+  padding: 10px 24px; 
+  cursor: pointer; 
+  width: 50%; 
+  display: block;
+
 }
+
 
 .grid-item1 {
     text-align: center;
     padding: 100px;
     width: auto;
-  background:none;
-  
+   font-size: xx-large;
+   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   background-image: none;
 }
 
 
 .grid-item2 {
-    float: left;
+    /* float: left; */
     box-shadow: 3px 4px 0px 0px #899599;
     background:linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
     background-color:#ededed;
@@ -48,7 +62,7 @@ body, .grid-container  {
 
 
 .grid-item3{
-    float:right;
+    /* float:right; */
     box-shadow: 3px 4px 0px 0px #899599;
     background:linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
     background-color:#ededed;
@@ -74,7 +88,9 @@ body, .grid-container  {
   }
 
 .grid-item4{
-  padding: 300px;
+  padding: 30px;
+  margin-bottom: 30px;
+  text-align: center;
   box-shadow: 3px 4px 0px 0px #899599;
     background:linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
     background-color:#ededed;
@@ -101,7 +117,8 @@ body, .grid-container  {
 
 
  .grid-item5{
-   padding: 30px;
+   padding: 300px;
+   
   text-align: center;
   background: none;
   box-shadow: 3px 4px 0px 0px #899599;
@@ -127,4 +144,5 @@ body, .grid-container  {
     position:relative;
     top:1px;
   }
-} 
+ 
+  
