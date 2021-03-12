@@ -202,7 +202,7 @@ function redirectToAboutTeamEarth(req, res) {
 
 // todo refernce to individual stat page
 function getlanding(req, res) {
-  res.render('index', { user: req.user , title: 'Welcome to music-lyfe'});
+  res.render('index', { user: req.user, title: 'Welcome to music-lyfe' });
 }
 
 async function getUserData(req, res) {
@@ -218,9 +218,30 @@ async function getUserData(req, res) {
   preview_url
   FROM app_users 
   LEFT OUTER JOIN tracks ON tracks.app_user_id=app_users.id
-  WHERE app_users.id=${req.params.id}
+  WHERE app_users.id=$1
   AND tracks.user_rank =1;`;
-  await client.query(sqlSelect)
+
+  //replace id with spotify_user_id if needed
+  if (req.params.id == 'me') {
+    if (!(req.user)){
+      res.redirect("/auth/spotify");
+      return;
+    }
+    sqlSelect = sqlSelect.replace("HERE app_users.id", "HERE app_users.spotify_user_id");
+  }
+  
+  const sqlArray = [
+    req.params.id == 'me' ? req.user.id : req.params.id
+  ];
+
+  //debug logs
+  if (process.env.DEBUG) { 
+    console.log(sqlSelect) ;
+    console.log(sqlArray);
+  };
+
+  await client.query(sqlSelect, sqlArray)
+    // await client.query(sqlSelect)
     .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
   if (!(userObject)) {
@@ -229,10 +250,20 @@ async function getUserData(req, res) {
   }
   sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
   await client.query(sqlSelect)
-    .then(result => { tracks = result.rows; })
+    .then(result => {
+      tracks = result.rows;
+
+      // #debug only logs
+      if (process.env.DEBUG) { 
+        console.log(tracks);
+        console.log(sqlSelect);
+      };
+
+      tracks = tracks ? tracks : [];
+      res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
+    })
     .catch(handelError(res));
-  tracks = tracks ? tracks : [];
-  res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
+
 }
 
 async function getTrackData(req, res) {
