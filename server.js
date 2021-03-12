@@ -116,7 +116,6 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
-    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err, title: 'Error' });
   };
@@ -201,7 +200,7 @@ function redirectToAboutTeamEarth(req, res) {
 
 // todo refernce to individual stat page
 function getlanding(req, res) {
-  res.render('index', { user: req.user });
+  res.render('index', { user: req.user , title: 'Welcome to music-lyfe'});
 }
 
 async function getUserData(req, res) {
