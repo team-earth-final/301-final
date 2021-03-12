@@ -47,6 +47,10 @@ form {
   align-items: center;
 }
 
+li {
+  margin-top: 20px;
+}
+
 /* models */
 
 h1 {
