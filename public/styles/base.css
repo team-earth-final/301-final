@@ -1,20 +1,10 @@
-/* *{
-  background: rgb(179,179,179);
-background: linear-gradient(90deg, rgba(179,179,179,0.850577731092437) 0%, rgba(157,190,190,1) 38%, rgba(18,19,19,1) 100%);
-font-family: 'Redressed', cursive;
-background-size: 100%;
-size: auto;
-} */
-
-/* .header:hover {
-    background:linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
-    background-color:#bab1ba;
-  } */
-
-header:active {
+/* header:active {
   position: relative;
   top: 1px;
-}
+} */
+
+/* button */
+
 a[type="button"] {
   text-align: center;
   background-color: none;
@@ -44,33 +34,43 @@ a[type="button"]:active {
   top: 1px;
 }
 
-body {
+button {
   text-align: center;
-}
-
-div,
-.grid-item1,
-.grid-item2,
-.grid-item3,
-.grid-item4,
-.grid-item5 {
-  margin: 30px;
-  padding: 10px 24px;
+  background-color: none;
+  background: none;
+  box-shadow: 3px 4px 0px 0px #899599;
+  background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
+  background-color: #ededed;
+  border-radius: 15px;
+  border: 1px solid #d6bcd6;
+  display: inline-block;
   cursor: pointer;
-  width: 50%;
-  display: block;
-  text-align: center;
+  /* color: #3a8a9e; */
+  color: rgb(9, 75, 119);
+  font-family: Arial;
+  font-size: 17px;
+  padding: 7px 25px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #e1e2ed;
 }
 
-.grid-item1 {
-  text-align: center;
-  padding: 100px;
-  width: auto;
-  font-size: xx-large;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  background-image: none;
+button:hover {
+  background: linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
+  background-color: #bab1ba;
+}
+button:active {
+  position: relative;
+  top: 1px;
 }
 
+/* body */
+
+/* body {
+  text-align: center;
+font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+
+} */
+/* 
 .grid-item2 {
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
@@ -97,7 +97,7 @@ div,
 }
 
 .grid-item3 {
-  /* float:right; */
+
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
   background-color: #ededed;
@@ -156,7 +156,7 @@ div,
   background: none;
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
-  /* background-color:#ededed; */
+
   border-radius: 15px;
   border: 1px solid #d6bcd6;
   display: inline-block;
@@ -184,7 +184,6 @@ div,
   padding: 10px;
   text-align: center;
   text-decoration: none;
-  /* background: none; */
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
   background-color: #ededed;
@@ -213,7 +212,6 @@ div,
   display: grid;
   padding: 10px;
   text-align: center;
-  /* background: none; */
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
   background-color: #ededed;
@@ -236,7 +234,7 @@ div,
 .grid-item7:active {
   position: relative;
   top: 1px;
-}
+} */
 
 /* #searchResultsDivOthers {
     background: none;

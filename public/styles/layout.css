@@ -1,82 +1,29 @@
 body {
-  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr 705px;
+  align-items: center;
+  justify-content: center;
+  background: none;
+}
+
+body > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 /* header */
 
-#partialsHeader {
+header {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-flow: wrap;
+  justify-content: space-around;
   align-items: center;
-  margin: 12px 0;
+  margin: 12px;
 }
 
-#partialsHeader a {
-  margin: 0 12px;
-  white-space: nowrap;
-}
-
-/* others_stats */
-
-button {
-  display: grid;
-  padding: 10px;
-  text-align: center;
-  background: none;
-  box-shadow: 3px 4px 0px 0px #899599;
-  background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
-  /* background-color:#ededed; */
-  border-radius: 15px;
-  border: 1px solid #d6bcd6;
-  display: inline-block;
-  cursor: pointer;
-  /* color: #3a8a9e; */
-  color: rgb(9, 75, 119);
-  font-family: Arial;
-  font-size: 17px;
-  padding: 7px 25px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #e1e2ed;
-}
-button {
-  background: linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
-  background-color: #bab1ba;
-}
-button {
-  position: relative;
-  top: 1px;
-}
-/* track_details */
-
-#trackDetails > div {
-  margin: auto;
-}
-
-#trackDetails > div > img {
-  max-width: 350px;
-}
-
-#trackDetails {
-  background-color: rgba(240, 255, 255, 0.5);
-}
-
-/* user_Stats */
-
-#userStats img {
-  max-width: 300px;
-  margin-top: ;
-}
-
-/* index */
-body {
-  background: none;
-}
-
-section.header {
-  background-color: rgba(209, 248, 246, 0.1);
-  /* height: 100vh; */
-}
+/* background */
 
 #turntable {
   position: fixed;
@@ -86,30 +33,29 @@ section.header {
   min-height: 100%;
   z-index: -1;
 }
-h1.grid-item1 {
-  color: rgb(58, 175, 204);
-  font-size: 50px;
-  font-weight: 200;
-  text-align: center;
-  width: 30%;
-}
-#indexPage .grid-item5 {
-  width: 200px;
-  margin-left: 200px;
+
+/* form */
+
+form {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
-#userStats h2,
-#userStats h4 {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 20px;
-  padding: 12px;
-}
+@media screen and (max-width: 1100px) {
+  body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-#userStats img {
-  box-shadow: -5px -5px 12px 5px rgba(0, 24, 118, 0.186);
-}
-
-/* about_us */
-
-.user_Stats {
+  body {
+    background-color: rgba(255, 254, 254, 0.32);
+    color: white;
+    font-size: large;
+    min-width: 400px;
+  }
 }

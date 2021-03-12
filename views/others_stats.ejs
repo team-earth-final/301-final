@@ -14,14 +14,12 @@
 
 <body id="othersDataPage">
     <%- include('partials/header.ejs') %>
-    <div id="searchResultsDivOthers">
-      <!-- <h2>this is <%= userObjects %></h2> -->
+    <div>
+      <ul>
       <% userObjects.forEach(user => { %>
         <div>
-        <!-- <ul>
-          <li>            -->
+          <li>
             <h3 class="user_name">This Is <%= user.display_name %></h3>
-            <!-- <a href="getUserData/<%= user.id %>"></a>                -->
              <form action="getUserData/<%= user.id %>" method="GET" >
               <button type="submit" value=''>View User</button>
             </form>
@@ -29,10 +27,10 @@
             <form action="User/<%= user.id %>?_method=DELETE" method="POST">
             <button type="submit" value='delete'>Delete User</button>
             </form>
-          <!-- </li>
-       </ul> -->
+          </li>
       </div>
        <%  }) %>  
+      </ul>
     </div>
 </body>
 
