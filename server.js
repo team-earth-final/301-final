@@ -69,8 +69,32 @@ app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 app.get('/getOthersData', getOthersData);
+app.delete('/user', deleteUser);
+app.put('/track', updateTrack);
 
 // ======================================= Rout Handelars =======================================
+
+function deleteUser() {
+  const sqlString = 'DELETE from app_users WHERE id=$1'
+    const sqlArray = [
+        req.params.id
+    ];
+    client.query(sqlString, sqlArray)
+    .then(res.redirect('/getOthersData'))
+    .catch(handelError(res))
+}
+
+function updateTrack() {
+  const sqlString = 'UPDATE tracks SET notes=$1 WHERE id=$2;';
+    const sqlArray = [
+        req.body.notes,
+        req.params.id
+    ];
+
+    client.query(sqlString, sqlArray)
+        .then(res.redirect(`/getTrackData/${req.params.id}`))
+        .catch(handelError(res))
+}
 
 function checkLogin() {
   return passport.authenticate('spotify', { failureRedirect: '/login' });
@@ -198,11 +222,11 @@ async function getUserData(req, res) {
   await client.query(sqlSelect)
     .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
-  if (!(userObject)){
+  if (!(userObject)) {
     res.send('Sorry, that route does not exist.');
     return;
   }
-    sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
+  sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
   await client.query(sqlSelect)
     .then(result => { tracks = result.rows; })
     .catch(handelError(res));
@@ -218,13 +242,15 @@ async function getTrackData(req, res) {
   await client.query(sqlSelect)
     .then(result => track = result.rows[0])
     .catch(handelError(res));
-
+  if (!(track)) {
+    res.send('Sorry, that route does not exist.');
+    return;
+  }
   //get lyrics
   const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
   await superagent.get(search_url)
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
     .then(result => {
-      console.log(result.body.response.hits[0].result);
       geniousData = result.body.response.hits[0].result
     })
 
