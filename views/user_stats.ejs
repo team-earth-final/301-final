@@ -16,8 +16,8 @@
     <%- include('partials/header.ejs') %>
 
     <div id="UserResultsDiv">
-      <h2>this is <%= userObject.display_name %>'s stats</h2>
-      <h4 class="fave_artist">your favorite Artist is: <%= userObject.fave_artist %></h4>
+      <h1>this is <%= userObject.display_name %>'s stats</h1>
+      <h5 class="fave_artist">Thier favorite Artist is: <%= userObject.fave_artist %></h5>
 
       <% for (let i=0; i < tracks.length; i++) { %>
         <ul>

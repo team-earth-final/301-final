@@ -59,7 +59,7 @@ li {
 
 /* models */
 
-h1 {
+h1, h5 {
   font-family: "Amatic SC", cursive;
   display: block;
   color: rgb(9, 75, 119);
@@ -68,6 +68,10 @@ h1 {
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 15px;
+}
+
+h5{
+  font-size: 30px;
 }
 
 h3{
