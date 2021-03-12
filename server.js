@@ -74,7 +74,7 @@ app.put('/track/:id', updateTrack);
 
 // ======================================= Rout Handelars =======================================
 
-function deleteUser() {
+function deleteUser(req, res) {
   const sqlString = 'DELETE from app_users WHERE id=$1'
     const sqlArray = [
         req.params.id
@@ -84,7 +84,7 @@ function deleteUser() {
     .catch(handelError(res))
 }
 
-function updateTrack() {
+function updateTrack(req, res) {
   const sqlString = 'UPDATE tracks SET notes=$1 WHERE id=$2;';
     const sqlArray = [
         req.body.notes,
