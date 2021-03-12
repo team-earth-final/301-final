@@ -9,16 +9,17 @@
     <link rel="stylesheet" href="/static/styles/reset.css">
     <link rel="stylesheet" href="/static/styles/base.css">
     <link rel="stylesheet" href="/static/styles/layout.css">
-    <link rel="stylesheet" href="/static/styles/modules.css">
+    <link rel="stylesheet" href="/static/styles/modules/module2.css">
 </head>
 
-<body>
+<body id="othersDataPage">
     <%- include('partials/header.ejs') %>
     <div id="searchResultsDivOthers">
       <!-- <h2>this is <%= userObjects %></h2> -->
       <% userObjects.forEach(user => { %>
-        <ul>
-          <li>           
+        <div>
+        <!-- <ul>
+          <li>            -->
             <h3 class="user_name">This Is <%= user.display_name %></h3>
             <!-- <a href="getUserData/<%= user.id %>"></a>                -->
              <form action="getUserData/<%= user.id %>" method="GET" >
@@ -28,8 +29,9 @@
             <form action="User/<%= user.id %>?_method=DELETE" method="POST">
             <button type="submit" value='delete'>Delete User</button>
             </form>
-          </li>
-       </ul>
+          <!-- </li>
+       </ul> -->
+      </div>
        <%  }) %>  
     </div>
 </body>
