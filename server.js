@@ -33,12 +33,19 @@ app.use(methodOverride('_method'));
 passport.serializeUser(function (user, done) { done(null, user); });
 passport.deserializeUser(function (obj, done) { done(null, obj); });
 
+let callbackURL;
+if (PORT === 3000) {
+  callbackURL: redirect_uri + PORT + authCallbackPath
+} else {
+  callbackURL: redirect_uri + PORT + authCallbackPath
+}
+
 passport.use(
   new SpotifyStrategy(
     {
       clientID: client_id,
       clientSecret: client_secret,
-      callbackURL: redirect_uri + PORT + authCallbackPath,
+      callbackURL: callbackURL,
     },
     // from; https://github.com/JMPerez/passport-spotify/blob/master/examples/login/app.js
     function (accessToken, refreshToken, expires_in, profile, done) {
