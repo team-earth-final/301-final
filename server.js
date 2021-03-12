@@ -225,10 +225,10 @@ async function getTrackData(req, res) {
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
     .then(result => {
       console.log(result.body.response.hits[0].result);
-      geniousData = result.body.response.hits[0].result
+      geniusData = result.body.response.hits[0].result
     })
 
-  res.render('track_details', { track, geniousData });
+  res.render('track_details', { track, geniusData });
 }
 
 async function getOthersData(req, res) {

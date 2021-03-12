@@ -24,6 +24,7 @@
              <form action="getUserData/<%= user.id %>" method="GET" >
                 <input type="submit" value="View this user's Stats" class="showTrackBtn">
             </form>
+            <form action="User/<%= user.id %>?_method=DELETE" method="POST">DELETE USER</form>
           </li>
        </ul>
        <%  }) %>  

@@ -15,13 +15,16 @@
 <body id="trackDetails">
   <%- include('partials/header.ejs') %>
   <div>
-    <img src="<%= geniousData.song_art_image_url %>" alt="">
+    <img src="<%= geniusData.song_art_image_url %>" alt="">
     <h1><%= track.track_name %> by <%= track.artist %></h1>
     <h2>off of: <%= track.album_name %> released <%= track.release_date %></h2>
     <div>genres: <%= track.genres %></div>
     <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div>
     <div>popularity rating: <%= track.popularity %></div>
-    <a class="grid-item5" type="button" href="/auth/spotify">View lyrics</a>
+    <form action="/update/<%= track.id %>?_method="PUT" method="POST">Add A Comment
+    <textarea name="notes" type="text" cols="30" rows="10" value="<%= track.notes %>"></textarea>
+    </form>
+    <a class="grid-item5" type="button" href= <%= geniusData.url %>>View lyrics</a>
   </div>
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script src="/static/js/player.js"></script>
