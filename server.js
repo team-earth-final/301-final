@@ -75,7 +75,7 @@ app.put('/track/:id', updateTrack);
 // ======================================= Rout Handelars =======================================
 
 function deleteUser(req, res) {
-  const sqlString = 'DELETE from app_users WHERE id=$1'
+  const sqlString = 'DELETE FROM app_users WHERE id=$1'
     const sqlArray = [
         req.params.id
     ];
@@ -90,7 +90,6 @@ function updateTrack(req, res) {
         req.body.notes,
         req.params.id
     ];
-
     client.query(sqlString, sqlArray)
         .then(res.redirect(`/getTrackData/${req.params.id}`))
         .catch(handelError(res))
@@ -164,7 +163,6 @@ async function initialUserDataPull(req, res) {
                   superagent.get(search_url)
                     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
                     .then(result => {
-                      console.log(result.body.response.hits[0].result.song_art_image_thumbnail_url);
                       album_cover_url = result.body.response.hits[0].result.song_art_image_thumbnail_url;
                       const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
                       const sqlArray = [
@@ -254,6 +252,7 @@ async function getTrackData(req, res) {
     .then(result => {
       geniusData = result.body.response.hits[0].result
     })
+    .catch(handelError(res));
 
   res.render('track_details', { track, geniusData });
 }
