@@ -10,6 +10,7 @@ size: auto;
     background:linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
     background-color:#bab1ba;
   } */
+
 header:active {
   position: relative;
   top: 1px;
@@ -25,7 +26,8 @@ a[type="button"] {
   border: 1px solid #d6bcd6;
   display: inline-block;
   cursor: pointer;
-  color: #3a8a9e;
+  /* color: #3a8a9e; */
+  color: rgb(9, 75, 119);
   font-family: Arial;
   font-size: 17px;
   padding: 7px 25px;
@@ -150,7 +152,6 @@ div,
 
 .grid-item5 {
   display: grid;
-  padding: 10px;
   text-align: center;
   background: none;
   box-shadow: 3px 4px 0px 0px #899599;
@@ -166,6 +167,7 @@ div,
   padding: 7px 25px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #e1e2ed;
+  width: 270px;
 }
 
 .grid-item5:hover {

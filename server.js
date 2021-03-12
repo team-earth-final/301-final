@@ -69,23 +69,12 @@ app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 app.get('/getOthersData', getOthersData);
-<<<<<<< HEAD
-app.delete('/UserData/:id', deleteUser)
-=======
 app.delete('/user/:id', deleteUser);
 app.put('/track/:id', updateTrack);
->>>>>>> 58b19980c33ff9e15170e424362127da7a45ad65
 
 // ======================================= Rout Handelars =======================================
 
 function deleteUser(req, res) {
-<<<<<<< HEAD
-  
-}
-
-function deleteUser(req, res) {
-  
-=======
   const sqlString = 'DELETE FROM app_users WHERE id=$1'
     const sqlArray = [
         req.params.id
@@ -104,7 +93,6 @@ function updateTrack(req, res) {
     client.query(sqlString, sqlArray)
         .then(res.redirect(`/getTrackData/${req.params.id}`))
         .catch(handelError(res))
->>>>>>> 58b19980c33ff9e15170e424362127da7a45ad65
 }
 
 function checkLogin() {
