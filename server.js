@@ -186,6 +186,7 @@ async function initialUserDataPull(req, res) {
                         .catch(handelError(res));
                       rank++;
                     })
+                    .catch(handelError(res));
                 });
             };
           });
