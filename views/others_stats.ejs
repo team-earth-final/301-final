@@ -22,7 +22,7 @@
             <h3 class="user_name">This Is <%= user.display_name %></h3>
             <!-- <a href="getUserData/<%= user.id %>"></a>                -->
              <form action="getUserData/<%= user.id %>" method="GET" >
-              <button type="submit" value='delete'>View User</button>
+              <button type="submit" value=''>View User</button>
             </form>
             <br>
             <form action="User/<%= user.id %>?_method=DELETE" method="POST">
