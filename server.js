@@ -116,6 +116,7 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
+    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err, title: 'Error' });
   };
