@@ -7,25 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Lyfe</title>
   <link rel="stylesheet" href="/static/styles/reset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap">
   <link rel="stylesheet" href="/static/styles/base.css">
   <link rel="stylesheet" href="/static/styles/layout.css">
-  <link rel="stylesheet" href="/static/styles/modules.css">
+  <link rel="stylesheet" href="/static/styles/modules/module3.css">
 </head>
 
-<body>
-  <%- include('partials/header.ejs') %>
-  <!-- <button href="/auth/spotify">Login with Spotify</button>
-  <button>View others stats</button>
-</body> -->
-
-    <!-- <section class="header">
-      <video autoplay muted loop id="turntable">
-        <source src="/static/images/turntable.mp4" type="video/mp4">
-      </video> -->
-    </section>
+  <body id="indexPage">
+    <%- include('partials/header.ejs') %>
     <h1 class="grid-item1">MUSIC    LYFE</h1>
-    <a class="grid-item5" type="button" href="/auth/spotify">Login with Spotify</a>
-    <!-- <a class="grid-item5" type="button" href="/aboutTeamEarth">About Team Earth</a> -->
-    </div>
+    <a class="loginButton" type="button" href="/auth/spotify">Login with Spotify</a>
   </body>
 </html>

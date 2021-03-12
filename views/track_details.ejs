@@ -9,18 +9,18 @@
   <link rel="stylesheet" href="/static/styles/reset.css">
   <link rel="stylesheet" href="/static/styles/base.css">
   <link rel="stylesheet" href="/static/styles/layout.css">
-  <link rel="stylesheet" href="/static/styles/modules.css">
+  <link rel="stylesheet" href="/static/styles/modules/module4.css">
 </head>
 
 <body id="trackDetails">
   <%- include('partials/header.ejs') %>
-  <div>
-    <img src="<%= track.album_cover_url %>" alt="">
-    <h1><%= track.track_name %> by <%= track.artist %></h1>
+  <div id="trackDetailsDiv">
+    <img src="<%= geniusData.song_art_image_url %>" alt="">
+    <h2><%= track.track_name %> by <%= track.artist %></h2>
     <h2>off of: <%= track.album_name %> released <%= track.release_date %></h2>
-    <div>genres: <%= track.genres %></div>
+    <h2>genres: <%= track.genres %></h2>
     <!-- <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div> -->
-    <div>popularity rating: <%= track.popularity %></div>
+    <h2>popularity rating: <%= track.popularity %></h2>
     <form action="/track/<%= track.id %>?_method=PUT" method="POST">
     <textarea name="notes" type="text" cols="30" rows="10" value="<%= track.notes %>"></textarea>
     <button type="submit" value=''>Add Comment</button>
