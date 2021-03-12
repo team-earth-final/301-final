@@ -25,6 +25,7 @@ CREATE TABLE tracks (
     popularity INT,
     last_time_user_played VARCHAR(255),
     album_cover_url VARCHAR(255),
+    notes TEXT,
     CONSTRAINT fk_app_users
       FOREIGN KEY(app_user_id) 
     REFERENCES app_users(id)

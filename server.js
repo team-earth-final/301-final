@@ -69,16 +69,42 @@ app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 app.get('/getOthersData', getOthersData);
+<<<<<<< HEAD
 app.delete('/UserData/:id', deleteUser)
+=======
+app.delete('/user/:id', deleteUser);
+app.put('/track/:id', updateTrack);
+>>>>>>> 58b19980c33ff9e15170e424362127da7a45ad65
 
 // ======================================= Rout Handelars =======================================
 
 function deleteUser(req, res) {
+<<<<<<< HEAD
   
 }
 
 function deleteUser(req, res) {
   
+=======
+  const sqlString = 'DELETE FROM app_users WHERE id=$1'
+    const sqlArray = [
+        req.params.id
+    ];
+    client.query(sqlString, sqlArray)
+    .then(res.redirect('/getOthersData'))
+    .catch(handelError(res))
+}
+
+function updateTrack(req, res) {
+  const sqlString = 'UPDATE tracks SET notes=$1 WHERE id=$2;';
+    const sqlArray = [
+        req.body.notes,
+        req.params.id
+    ];
+    client.query(sqlString, sqlArray)
+        .then(res.redirect(`/getTrackData/${req.params.id}`))
+        .catch(handelError(res))
+>>>>>>> 58b19980c33ff9e15170e424362127da7a45ad65
 }
 
 function checkLogin() {
@@ -169,6 +195,7 @@ async function initialUserDataPull(req, res) {
                         .catch(handelError(res));
                       rank++;
                     })
+                    .catch(handelError(res));
                 });
             };
           });
@@ -205,11 +232,11 @@ async function getUserData(req, res) {
   await client.query(sqlSelect)
     .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
-  if (!(userObject)){
+  if (!(userObject)) {
     res.send('Sorry, that route does not exist.');
     return;
   }
-    sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
+  sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
   await client.query(sqlSelect)
     .then(result => { tracks = result.rows; })
     .catch(handelError(res));
@@ -225,7 +252,10 @@ async function getTrackData(req, res) {
   await client.query(sqlSelect)
     .then(result => track = result.rows[0])
     .catch(handelError(res));
-
+  if (!(track)) {
+    res.send('Sorry, that route does not exist.');
+    return;
+  }
   //get lyrics
   const search_url = 'https://api.genius.com/search?q=' + track.track_name + ' ' + track.artist
   await superagent.get(search_url)
@@ -233,6 +263,7 @@ async function getTrackData(req, res) {
     .then(result => {
       geniusData = result.body.response.hits[0].result
     })
+    .catch(handelError(res));
 
   res.render('track_details', { track, geniusData });
 }
