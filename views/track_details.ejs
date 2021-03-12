@@ -15,11 +15,11 @@
 <body id="trackDetails">
   <%- include('partials/header.ejs') %>
   <div>
-    <img src="<%= geniusData.song_art_image_url %>" alt="">
+    <img src="<%= track.album_cover_url %>" alt="">
     <h1><%= track.track_name %> by <%= track.artist %></h1>
     <h2>off of: <%= track.album_name %> released <%= track.release_date %></h2>
     <div>genres: <%= track.genres %></div>
-    <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div>
+    <!-- <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div> -->
     <div>popularity rating: <%= track.popularity %></div>
     <form action="/track/<%= track.id %>?_method=PUT" method="POST">
     <textarea name="notes" type="text" cols="30" rows="10" value="<%= track.notes %>"></textarea>

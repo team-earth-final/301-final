@@ -33,12 +33,19 @@ app.use(methodOverride('_method'));
 passport.serializeUser(function (user, done) { done(null, user); });
 passport.deserializeUser(function (obj, done) { done(null, obj); });
 
+let callbackURL;
+if (PORT == 3000) {
+  callbackURL = redirect_uri + PORT + authCallbackPath
+} else {
+  callbackURL = redirect_uri + authCallbackPath
+}
+
 passport.use(
   new SpotifyStrategy(
     {
       clientID: client_id,
       clientSecret: client_secret,
-      callbackURL: redirect_uri + PORT + authCallbackPath,
+      callbackURL: callbackURL,
     },
     // from; https://github.com/JMPerez/passport-spotify/blob/master/examples/login/app.js
     function (accessToken, refreshToken, expires_in, profile, done) {
@@ -76,23 +83,23 @@ app.put('/track/:id', updateTrack);
 
 function deleteUser(req, res) {
   const sqlString = 'DELETE FROM app_users WHERE id=$1'
-    const sqlArray = [
-        req.params.id
-    ];
-    client.query(sqlString, sqlArray)
+  const sqlArray = [
+    req.params.id
+  ];
+  client.query(sqlString, sqlArray)
     .then(res.redirect('/getOthersData'))
     .catch(handelError(res))
 }
 
 function updateTrack(req, res) {
   const sqlString = 'UPDATE tracks SET notes=$1 WHERE id=$2;';
-    const sqlArray = [
-        req.body.notes,
-        req.params.id
-    ];
-    client.query(sqlString, sqlArray)
-        .then(res.redirect(`/getTrackData/${req.params.id}`))
-        .catch(handelError(res))
+  const sqlArray = [
+    req.body.notes,
+    req.params.id
+  ];
+  client.query(sqlString, sqlArray)
+    .then(res.redirect(`/getTrackData/${req.params.id}`))
+    .catch(handelError(res))
 }
 
 function checkLogin() {
@@ -115,6 +122,8 @@ function handelError(res) {
 }
 
 async function initialUserDataPull(req, res) {
+  // debug only console.log();
+  if (process.env.DEBUG) { console.log('initial-siging started')}
 
   let user_id;
   // get top artist
@@ -155,36 +164,28 @@ async function initialUserDataPull(req, res) {
                 .set('Accept', 'application/json')
                 .set('Content-Type', 'application/json')
                 .then(data => {
-                  let genres = data.body.genres.join(' | ')
-                  let album_cover_url;
-                  //get artowrk
-                  const search_url = 'https://api.genius.com/search?q=' + track.name + ' ' + track.album.name
-                  superagent.get(search_url)
-                    .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
-                    .then(result => {
-                      album_cover_url = result.body.response.hits[0].result.song_art_image_thumbnail_url;
-                      const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
-                      const sqlArray = [
-                        track.name,
-                        track.artists[0].name,
-                        track.album.name,
-                        track.album.release_date,
-                        genres,
-                        track.id,
-                        track.preview_url,
-                        user_id,
-                        rank,
-                        '-1', //later
-                        '-1', //potential stretch
-                        track.popularity,
-                        album_cover_url
-                      ];
-                      client.query(sqlString, sqlArray)
-                        .catch(handelError(res));
-                      rank++;
-                    })
+                  let genres = data.body.genres.join(' | ');
+                  const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
+                  const sqlArray = [
+                    track.name,
+                    track.artists[0].name,
+                    track.album.name,
+                    track.album.release_date,
+                    genres,
+                    track.id,
+                    track.preview_url,
+                    user_id,
+                    rank,
+                    '-1', //later
+                    '-1', //potential stretch
+                    track.popularity,
+                    track.album.images[0].url
+                  ];
+                  client.query(sqlString, sqlArray)
                     .catch(handelError(res));
-                });
+                  rank++;
+                })
+                .catch(handelError(res));
             };
           });
       })
@@ -253,6 +254,9 @@ async function getTrackData(req, res) {
     })
     .catch(handelError(res));
 
+    if (!(geniusData)) {
+      geniusData = {url: ''}
+    }
   res.render('track_details', { track, geniusData });
 }
 
