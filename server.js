@@ -163,7 +163,7 @@ async function initialUserDataPull(req, res) {
                   superagent.get(search_url)
                     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
                     .then(result => {
-                      album_cover_url = result.body.response.hits[0].result.song_art_image_thumbnail_url;
+                      album_cover_url = result ? result.body.response.hits[0].result.song_art_image_thumbnail_url : '';
                       const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
                       const sqlArray = [
                         track.name,
