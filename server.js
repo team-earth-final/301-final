@@ -237,7 +237,7 @@ async function getUserData(req, res) {
 
 async function getTrackData(req, res) {
   let track;
-  let geniousData;
+  let geniusData;
 
   const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
   await client.query(sqlSelect)
