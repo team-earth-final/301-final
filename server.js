@@ -123,7 +123,7 @@ function handelError(res) {
 
 async function initialUserDataPull(req, res) {
   // debug only console.log();
-  if (process.env.DEBUG) { console.log('initial-siging started')}
+  if (process.env.DEBUG) { console.log('initial-siging started') }
 
   let user_id;
   // get top artist
@@ -189,7 +189,8 @@ async function initialUserDataPull(req, res) {
             };
           });
       })
-      res.redirect(`/getUserData/${user_id}`)
+      if (!(user_id)) res.redirect(`/getOthersData`)
+      else res.redirect(`/getUserData/${user_id}`);
     })
 }
 
@@ -254,9 +255,9 @@ async function getTrackData(req, res) {
     })
     .catch(handelError(res));
 
-    if (!(geniusData)) {
-      geniusData = {url: ''}
-    }
+  if (!(geniusData)) {
+    geniusData = { url: '' }
+  }
   res.render('track_details', { track, geniusData });
 }
 
