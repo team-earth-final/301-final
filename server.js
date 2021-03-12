@@ -116,6 +116,7 @@ function authUserWithScopes() {
 function handelError(res) {
   return err => {
     //log error
+    console.log(err);
     // let user know we messed up
     res.status(500).render("error", { err: err, title: 'Error' });
   };
@@ -123,8 +124,9 @@ function handelError(res) {
 
 async function initialUserDataPull(req, res) {
   // debug only console.log();
-  if (process.env.DEBUG) { console.log('initial-siging started')}
+  if (process.env.DEBUG) { console.log('initial-siging started') }
 
+  let tracks;
   let user_id;
   // get top artist
   await superagent.get("https://api.spotify.com/v1/me/top/artists?limit=1&offset=0")
@@ -150,47 +152,58 @@ async function initialUserDataPull(req, res) {
     .auth(req.user.accessToken, { type: 'bearer' })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
-    .then(data => {
-      let rank = 1;
-      data.body.items.forEach(track => {
-        const sqlString = 'SELECT * FROM tracks WHERE track_name =$1';
-        const sqlArray = [track.name];
-        client.query(sqlString, sqlArray)
-          .then(dataFromDatabase => {
-            if (dataFromDatabase.rows.length === 0) {
-              //get genre
-              superagent.get(`https://api.spotify.com/v1/artists/${track.artists[0].id}`)
-                .auth(req.user.accessToken, { type: 'bearer' })
-                .set('Accept', 'application/json')
-                .set('Content-Type', 'application/json')
-                .then(data => {
-                  let genres = data.body.genres.join(' | ');
-                  const sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
-                  const sqlArray = [
-                    track.name,
-                    track.artists[0].name,
-                    track.album.name,
-                    track.album.release_date,
-                    genres,
-                    track.id,
-                    track.preview_url,
-                    user_id,
-                    rank,
-                    '-1', //later
-                    '-1', //potential stretch
-                    track.popularity,
-                    track.album.images[0].url
-                  ];
-                  client.query(sqlString, sqlArray)
-                    .catch(handelError(res));
-                  rank++;
-                })
-                .catch(handelError(res));
-            };
-          });
-      })
-      res.redirect(`/getUserData/${user_id}`)
-    })
+    .then(data => { tracks = data.body.items })
+
+  let rank = 1;
+  let dataFromDatabase;
+  let sqlString;
+  let sqlArray;
+
+  for (const track of tracks) {
+    await addSingleTrack(track);
+  }
+
+  //finaly return
+  if (!(user_id)) res.redirect(`/getOthersData`);
+  else res.redirect(`/getUserData/${user_id}`);
+
+  async function addSingleTrack(track) {
+    sqlString = 'SELECT * FROM tracks WHERE track_name =$1 AND app_user_id=$2';
+    sqlArray = [track.name, user_id];
+    await client.query(sqlString, sqlArray)
+      .then(result => { dataFromDatabase = result; });
+    if (dataFromDatabase.rows.length === 0) {
+      //get genre
+      await superagent.get(`https://api.spotify.com/v1/artists/${track.artists[0].id}`)
+        .auth(req.user.accessToken, { type: 'bearer' })
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .then(data => {
+          let genres = data.body.genres.join(' | ');
+          sqlString = 'INSERT INTO tracks(track_name, artist, album_name, release_date, genres, spotify_track_id, preview_url, app_user_id, user_rank, global_plays, user_plays, popularity, album_cover_url) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);';
+          sqlArray = [
+            track.name,
+            track.artists[0].name,
+            track.album.name,
+            track.album.release_date,
+            genres,
+            track.id,
+            track.preview_url,
+            user_id,
+            rank,
+            '-1',
+            '-1',
+            track.popularity,
+            track.album.images[0].url
+          ];
+        })
+        .catch(handelError(res));
+      await client.query(sqlString, sqlArray)
+        .catch(handelError(res));
+        if (process.env.DEBUG) { console.log(`Added Track ${rank}`) }
+      rank++;
+    };
+  }
 }
 
 app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
@@ -200,7 +213,7 @@ function redirectToAboutTeamEarth(req, res) {
 
 // todo refernce to individual stat page
 function getlanding(req, res) {
-  res.render('index', { user: req.user , title: 'Welcome to music-lyfe'});
+  res.render('index', { user: req.user, title: 'Welcome to music-lyfe' });
 }
 
 async function getUserData(req, res) {
@@ -216,9 +229,30 @@ async function getUserData(req, res) {
   preview_url
   FROM app_users 
   LEFT OUTER JOIN tracks ON tracks.app_user_id=app_users.id
-  WHERE app_users.id=${req.params.id}
+  WHERE app_users.id=$1
   AND tracks.user_rank =1;`;
-  await client.query(sqlSelect)
+
+  //replace id with spotify_user_id if needed
+  if (req.params.id == 'me') {
+    if (!(req.user)) {
+      res.redirect("/auth/spotify");
+      return;
+    }
+    sqlSelect = sqlSelect.replace("HERE app_users.id", "HERE app_users.spotify_user_id");
+  }
+
+  const sqlArray = [
+    req.params.id == 'me' ? req.user.id : req.params.id
+  ];
+
+  //debug logs
+  if (process.env.DEBUG) {
+    console.log(sqlSelect);
+    console.log(sqlArray);
+  };
+
+  await client.query(sqlSelect, sqlArray)
+    // await client.query(sqlSelect)
     .then(result => { userObject = result.rows[0] })
     .catch(handelError(res))
   if (!(userObject)) {
@@ -227,10 +261,20 @@ async function getUserData(req, res) {
   }
   sqlSelect = `SELECT * FROM tracks WHERE app_user_id=${userObject.id};`;
   await client.query(sqlSelect)
-    .then(result => { tracks = result.rows; })
+    .then(result => {
+      tracks = result.rows;
+
+      // #debug only logs
+      if (process.env.DEBUG) {
+        console.log(tracks);
+        console.log(sqlSelect);
+      };
+
+      tracks = tracks ? tracks : [];
+      res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
+    })
     .catch(handelError(res));
-  tracks = tracks ? tracks : [];
-  res.render('user_stats', { userObject, tracks, title: `${userObject.display_name} User Stats` });
+
 }
 
 async function getTrackData(req, res) {
@@ -254,9 +298,9 @@ async function getTrackData(req, res) {
     })
     .catch(handelError(res));
 
-    if (!(geniusData)) {
-      geniusData = {url: ''}
-    }
+  if (!(geniusData)) {
+    geniusData = { url: '' }
+  }
   res.render('track_details', { track, geniusData });
 }
 

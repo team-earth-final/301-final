@@ -11,9 +11,8 @@ a[type="button"] {
   background-color: #ededed;
   border-radius: 15px;
   border: 1px solid #d6bcd6;
-  display: inline-block;
+  /* display: inline-block; */
   cursor: pointer;
-  /* color: #3a8a9e; */
   color: rgb(9, 75, 119);
   font-family: Arial;
   font-size: 17px;
@@ -36,10 +35,10 @@ body {
 }
 
 div,
-.grid-item1,
 .grid-item2,
 .grid-item3,
 .grid-item4 {
+
   margin: 30px;
   padding: 10px 24px;
   cursor: pointer;
@@ -49,12 +48,24 @@ div,
 }
 
 .grid-item1 {
+  font-family: "Amatic SC", cursive;
+  display: inline-flex;
+  width: 68%;
+  color: rgb(9, 75, 119);
+  font-size: 100px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: center;
-  padding: 100px;
+  /* padding: 100px; */
   /* width: auto; */
   font-size: xx-large;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  /* font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif; */
   background-image: none;
+  text-shadow: 0px 1px 0px #e1e2ed;
+  padding: 0;
+  margin: 0;
+  margin-top: 20%;
 }
 
 .grid-item2 {
@@ -136,13 +147,11 @@ div,
 }
 
 .grid-item5 {
-  display: block;
-  margin: 0 auto;
+  /* display: block;
+  margin: 0 auto; */
   text-align: center;
   background: none;
   box-shadow: 3px 4px 0px 0px #899599;
-  background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
-  /* background-color:#ededed; */
   border-radius: 15px;
   border: 1px solid #d6bcd6;
   cursor: pointer;
@@ -153,6 +162,9 @@ div,
   text-decoration: none;
   text-shadow: 0px 1px 0px #e1e2ed;
   width: 270px;
+  margin-top: 100px;
+  margin-right:55%;
+  
 }
 
 .grid-item5:hover {
@@ -170,7 +182,6 @@ div,
   padding: 10px;
   text-align: center;
   text-decoration: none;
-  /* background: none; */
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
   background-color: #ededed;
@@ -199,7 +210,6 @@ div,
   display: grid;
   padding: 10px;
   text-align: center;
-  /* background: none; */
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
   background-color: #ededed;
