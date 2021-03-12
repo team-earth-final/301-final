@@ -1,4 +1,4 @@
-body {
+body#aboutTeamEarth {
   width: 100%;
   margin: 0 auto;
   /* background: rgb(179, 179, 179);
@@ -22,14 +22,35 @@ body {
 img {
   border-radius: 5px;
 }
+
+#aboutUsHeadline {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+body#aboutTeamEarth h2.title {
+  display: inline-block;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
 h2 {
   padding: 10px;
   font-size: 34px;
   font-family: cursive;
 }
 
-h2.title {
-  text-align: center;
+body#aboutTeamEarth h1.grid-item1 {
+  display: inline-block;
+  color: #3a8a9e;
+  font-family: Arial;
+  font-size: 54px;
+  padding: 7px 25px;
+  text-shadow: 0px 1px 0px #e1e2ed;
+  padding: 0;
+  margin: 0;
 }
 
 p {
@@ -42,9 +63,9 @@ p {
   justify-content: center;
 }
 .card-container {
-  height: 400px;
-  width: 400px;
-  margin: 30px;
+  height: 370px;
+  width: 370px;
+  margin: 20px;
   perspective: 600;
   position: relative;
   display: flex;
@@ -89,7 +110,7 @@ p {
 .back {
   box-sizing: border-box;
   text-align: justify;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 150%;
   padding: 20px;
@@ -100,8 +121,8 @@ p {
 }
 
 img.about-us {
-  width: 400px;
-  height: 400px;
+  width: 370px;
+  height: 370px;
 }
 
 .connect {
@@ -110,11 +131,11 @@ img.about-us {
   align-items: flex-end;
 }
 img.authors-social {
-  /* position: absolute; */
-  /* bottom: 20px; */
+  position: absolute;
+  bottom: 20px;
   height: 40px;
   width: 40px;
-  margin-top: -20px;
+  margin-left: -20px;
   box-shadow: 0 0 55px 25px #f2ff0400;
   border: solid 3px #f2ff0400;
 }

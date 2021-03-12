@@ -219,7 +219,7 @@ async function getUserData(req, res) {
 
 async function getTrackData(req, res) {
   let track;
-  let geniousData;
+  let geniusData;
 
   const sqlSelect = `SELECT * FROM tracks WHERE id=${req.params.id}`;
   await client.query(sqlSelect)
@@ -231,10 +231,10 @@ async function getTrackData(req, res) {
   await superagent.get(search_url)
     .auth(process.env.GENIOUS_TOKEN, { type: 'bearer' })
     .then(result => {
-      geniousData = result.body.response.hits[0].result
+      geniusData = result.body.response.hits[0].result
     })
 
-  res.render('track_details', { track, geniousData });
+  res.render('track_details', { track, geniusData });
 }
 
 async function getOthersData(req, res) {
