@@ -37,7 +37,7 @@ let callbackURL;
 if (PORT === 3000) {
   callbackURL = redirect_uri + PORT + authCallbackPath
 } else {
-  callbackURL = redirect_uri + PORT + authCallbackPath
+  callbackURL = redirect_uri + authCallbackPath
 }
 
 passport.use(
