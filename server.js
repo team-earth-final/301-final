@@ -69,8 +69,8 @@ app.get('/', getlanding);
 app.get('/getUserData/:id', getUserData);
 app.get('/getTrackData/:id', getTrackData);
 app.get('/getOthersData', getOthersData);
-app.delete('/user', deleteUser);
-app.put('/track', updateTrack);
+app.delete('/user/:id', deleteUser);
+app.put('/track/:id', updateTrack);
 
 // ======================================= Rout Handelars =======================================
 
