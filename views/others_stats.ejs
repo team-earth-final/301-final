@@ -19,7 +19,7 @@
       <% userObjects.forEach(user => { %>
         <div>
           <li>
-            <h3 class="user_name">This Is <%= user.display_name %></h3>
+            <h3 class="user_name"><%= user.display_name %></h3>
              <form action="getUserData/<%= user.id %>" method="GET" >
               <button type="submit" value=''>View User</button>
             </form>

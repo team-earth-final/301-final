@@ -19,6 +19,10 @@ body#aboutTeamEarth {
   background-position: center;
 } */
 
+body {
+  display: flex;
+}
+
 img {
   border-radius: 5px;
 }

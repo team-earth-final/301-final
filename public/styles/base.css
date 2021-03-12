@@ -3,6 +3,11 @@
   top: 1px;
 } */
 
+/* album image width */
+img {
+  width: 350px;
+}
+
 /* button */
 
 a[type="button"] {

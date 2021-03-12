@@ -6,7 +6,7 @@ body {
   background: none;
 }
 
-body > div {
+body>div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,6 +21,10 @@ header {
   justify-content: space-around;
   align-items: center;
   margin: 12px;
+}
+
+header>* {
+  margin: 5px;
 }
 
 /* background */
@@ -43,6 +47,26 @@ form {
   align-items: center;
 }
 
+/* models */
+
+h1 {
+  font-family: "Amatic SC", cursive;
+  display: block;
+  color: rgb(9, 75, 119);
+  font-size: 50px;
+  font-weight: 250;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 15px;
+}
+
+h3{
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  margin: 10px;
+  text-align: center;
+
+}
+
 @media screen and (max-width: 1100px) {
   body {
     width: 100%;
@@ -51,7 +75,6 @@ form {
     justify-content: center;
     align-items: center;
   }
-
   body {
     background-color: rgba(255, 254, 254, 0.32);
     color: white;
