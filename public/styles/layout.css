@@ -47,6 +47,10 @@ form {
   align-items: center;
 }
 
+form > div > * {
+margin: 5px;
+}
+
 /* li */
 
 li {
