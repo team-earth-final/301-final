@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Lyfe</title>
     <link rel="stylesheet" href="/static/styles/reset.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles/base.css">
     <link rel="stylesheet" href="/static/styles/layout.css">
     <link rel="stylesheet" href="/static/styles/modules/module2.css">
@@ -14,7 +15,7 @@
 
 <body id="userStats">
     <%- include('partials/header.ejs') %>
-
+    <h1 class="grid-item1">MUSIC LYFE</h1>
     <div id="UserResultsDiv">
       <h2>this is <%= userObject.display_name %>'s stats</h2>
       <h4 class="fave_artist">your favorite Artist is: <%= userObject.fave_artist %></h4>

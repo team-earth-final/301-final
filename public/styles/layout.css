@@ -1,9 +1,8 @@
-body {
+/* body {
   text-align: left;
-}
+} */
 
 /* header */
-
 #partialsHeader {
   display: flex;
   flex-direction: row;
@@ -26,12 +25,10 @@ button {
   background: none;
   box-shadow: 3px 4px 0px 0px #899599;
   background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
-  /* background-color:#ededed; */
   border-radius: 15px;
   border: 1px solid #d6bcd6;
   display: inline-block;
   cursor: pointer;
-  /* color: #3a8a9e; */
   color: rgb(9, 75, 119);
   font-family: Arial;
   font-size: 17px;
@@ -49,23 +46,35 @@ button {
 }
 /* track_details */
 
+
+
+#trackDetails h2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 20px;
+  padding: 12px;
+}
+
+#trackDetails img {
+  box-shadow: -5px -5px 12px 5px rgba(0, 24, 118, 0.186);
+}
+
+
 #trackDetails > div {
   margin: auto;
 }
 
 #trackDetails > div > img {
-  max-width: 350px;
+  max-width: 300px;
 }
 
 #trackDetails {
-  background-color: rgba(240, 255, 255, 0.5);
+  width: 50%;
 }
 
 /* user_Stats */
 
 #userStats img {
   max-width: 300px;
-  margin-top: ;
 }
 
 /* index */
@@ -75,7 +84,6 @@ body {
 
 section.header {
   background-color: rgba(209, 248, 246, 0.1);
-  /* height: 100vh; */
 }
 
 #turntable {
@@ -86,13 +94,13 @@ section.header {
   min-height: 100%;
   z-index: -1;
 }
-h1.grid-item1 {
+/* h1.grid-item1 {
   color: rgb(58, 175, 204);
   font-size: 50px;
   font-weight: 200;
   text-align: center;
   width: 30%;
-}
+} */
 #indexPage .grid-item5 {
   width: 200px;
   margin-left: 200px;

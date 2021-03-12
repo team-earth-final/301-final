@@ -7,20 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Lyfe</title>
   <link rel="stylesheet" href="/static/styles/reset.css">
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/styles/base.css">
   <link rel="stylesheet" href="/static/styles/layout.css">
   <link rel="stylesheet" href="/static/styles/modules.css">
 </head>
 
-<body id="trackDetails">
+<body>
   <%- include('partials/header.ejs') %>
-  <div>
+  <h1 class="grid-item1">MUSIC LYFE</h1>
+  <div id="trackDetails">
+    
     <img src="<%= track.album_cover_url %>" alt="">
-    <h1><%= track.track_name %> by <%= track.artist %></h1>
-    <h2>off of: <%= track.album_name %> released <%= track.release_date %></h2>
-    <div>genres: <%= track.genres %></div>
+    <h2><%= track.track_name %> by <%= track.artist %></h2>
+    <h2>Album: <%= track.album_name %> Released <%= track.release_date %></h2>
+    <div>Genres: <%= track.genres %></div>
     <!-- <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div> -->
-    <div>popularity rating: <%= track.popularity %></div>
+    <div>Popularity Rating: <%= track.popularity %></div>
     <form action="/track/<%= track.id %>?_method=PUT" method="POST">
     <textarea name="notes" type="text" cols="30" rows="10" placeholder="<%= track.notes %>" value="<%= track.notes %>"></textarea>
     <button type="submit" value=''>Add Comment</button>
