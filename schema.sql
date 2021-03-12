@@ -28,5 +28,5 @@ CREATE TABLE tracks (
     notes TEXT,
     CONSTRAINT fk_app_users
       FOREIGN KEY(app_user_id) 
-    REFERENCES app_users(id)
+    REFERENCES app_users(id) ON DELETE CASCADE
 );
