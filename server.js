@@ -189,8 +189,8 @@ async function initialUserDataPull(req, res) {
             };
           });
       })
+      res.redirect(`/getUserData/${user_id}`)
     })
-  res.redirect(`/getUserData/${user_id}`)
 }
 
 app.get('/aboutTeamEarth', redirectToAboutTeamEarth)
