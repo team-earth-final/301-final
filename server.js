@@ -123,6 +123,8 @@ function handelError(res) {
 }
 
 async function initialUserDataPull(req, res) {
+  // debug only console.log();
+  if (process.env.DEBUG) { console.log('initial-siging started')}
 
   let user_id;
   // get top artist
