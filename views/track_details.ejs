@@ -15,7 +15,7 @@
 <body id="trackDetails">
   <%- include('partials/header.ejs') %>
   <div>
-    <img src="<%= geniusData.song_art_image_url %>" alt="">
+    <img src="<%= track.album_cover_url %>" alt="">
     <h1><%= track.track_name %> by <%= track.artist %></h1>
     <h2>off of: <%= track.album_name %> released <%= track.release_date %></h2>
     <div>genres: <%= track.genres %></div>
