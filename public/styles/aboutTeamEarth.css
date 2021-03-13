@@ -1,23 +1,8 @@
 body#aboutTeamEarth {
   width: 100%;
   margin: 0 auto;
-  /* background: rgb(179, 179, 179);
-  background: linear-gradient(
-    90deg,
-    rgba(179, 179, 179, 0.850577731092437) 0%,
-    rgba(157, 190, 190, 1) 38%,
-    rgba(18, 19, 19, 1) 100%
-  ); */
 }
 
-/* header {
-  height: 300px;
-  width: 1300px;
-  margin: 0 auto;
-  background-image: url("../img/header5.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-} */
 
 body {
   display: flex;
@@ -91,7 +76,6 @@ p {
 }
 .card:hover {
   transform: rotateY(180deg);
-  /* opacity: 0.3; */
 }
 .card .side {
   position: absolute;
@@ -101,9 +85,7 @@ p {
 }
 .card .back {
   transform: rotateY(180deg);
-  /* background-color: rgba(68, 41, 241, 0.1); */
   background: linear-gradient(skyblue, khaki);
-  /* opacity: 0.2; */
   transition-property: background-color, color;
   transition-duration: 1s, 0.5s;
   transition-timing-function: ease-in-out;
@@ -149,8 +131,6 @@ img.authors-social {
 
 img.authors-social:hover {
   border: 3px solid white;
-  /* filter: invert(100%);
--webkit-filter: invert(100%); */
   box-shadow: 0 0 55px 25px #f2ff044f;
   border: solid 3px #f2ff044f;
   opacity: 0.8;

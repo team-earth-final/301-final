@@ -23,7 +23,6 @@
       </h2>
       <div>genres: <%= track.genres %>
       </div>
-      <!-- <div><%= track.preview_url %> // this will soon be a playable button or somthing? havn't decided make it what you want but it may be able to play the sogn in the browser!</div> -->
       <div>popularity rating: <%= track.popularity %>
       </div>
       <form action="/track/<%= track.id %>?_method=PUT" method="POST">

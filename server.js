@@ -33,7 +33,7 @@ app.use(methodOverride('_method'));
 passport.serializeUser(function (user, done) { done(null, user); });
 passport.deserializeUser(function (obj, done) { done(null, obj); });
 
-let callbackURL;
+let callbackURL; //only include port for local dev
 if (PORT == 3000) {
   callbackURL = redirect_uri + PORT + authCallbackPath
 } else {
